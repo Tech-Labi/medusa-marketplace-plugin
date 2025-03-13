@@ -11,18 +11,20 @@ To set up the development environment:
     ```
 2.  **Install dependencies**
     ```bash
-    npm install
+    yarn
     ```
 3.  **Start development mode**
     ```bash
-    npx medusa plugin:develop
+    yarn dev
     ```
-
-This command will:
-
-* Watch for changes in the plugin. Whenever a file is changed, the plugin is automatically built.
-* Publish the plugin changes to the local package registry. This will automatically update the plugin in the Medusa application using it.
-* Provide real-time HMR updates of admin extensions.
+    This command will:
+    * Watch for changes in the plugin. Whenever a file is changed, the plugin is automatically built.
+    * Publish the plugin changes to the local package registry. This will automatically update the plugin in the Medusa     application using it.
+    * Provide real-time HMR updates of admin extensions.
+4.  **Build**
+    ```bash
+    yarn build
+    ```
 
 ## How to publish a new version
 
@@ -41,7 +43,7 @@ This command will:
     ```
 5.  **Verify that the library has been published successfully:**
     ```bash
-    npm view @tech-labi/medusa-marketplace-plugin
+    npm view @techlabi/medusa-marketplace-plugin
     ```
 6.  **Create a new git tag:**
     ```bash

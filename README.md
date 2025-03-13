@@ -1,5 +1,48 @@
-# medusa-marketplace-plugin
-Medusa multivendor marketplace plugin 
+# Medusa Multivendor Marketplace Plugin
+
+This plugin transforms your Medusa store into a robust multivendor marketplace.
+
+## Main Features
+
+* **Impersonation:**
+    * Super admins can seamlessly switch between vendor accounts, enabling them to:
+        * View the marketplace from a vendor's perspective.
+        * Troubleshoot issues efficiently.
+        * Provide personalized support.
+* **Store Creation:**
+    * The plugin provides an intuitive interface for creating new vendor stores, simplifying the onboarding process for new sellers.
+* **Entity Separation:**
+    * The plugin ensures that each store has its own independent set of entities (customers, orders, products, etc.), preventing data conflicts and ensuring privacy.
+
+## Functionality Overview
+
+Key features include:
+
+* **Super Admin Role:**
+    * Introduces a super admin role with the ability to manage all aspects of the marketplace.
+    * Super admins can:
+        * Create and manage multiple vendor stores.
+        * Impersonate vendor accounts to troubleshoot and provide support.
+        * Access and analyze data across all stores.
+* **Vendor Store Management:**
+    * Enables the creation of individual vendor stores, each with its own:
+        * **Customer Base:** Independent customer lists for each vendor.
+        * **Order Management:** Separate order tracking and fulfillment.
+        * **Price Lists:** Unique pricing strategies for each vendor.
+        * **Product Catalogs:** Distinct product offerings per store.
+        * **Shipping Profiles:** Tailored shipping options.
+        * **Stock Locations:** Independent inventory management.
+        * **User Accounts:** Vendor-specific user management.
+* **Data Separation:**
+    * The plugin ensures clear separation of data between stores using Medusa's module links:
+        * `customer-store.ts`
+        * `order-store.ts`
+        * `price-list-store.ts`
+        * `product-store.ts`
+        * `shipping-profile-store.ts`
+        * `stock-location-store.ts`
+        * `user-store.ts`
+    * This architecture allows vendors to operate independently while maintaining a cohesive marketplace experience for customers.
 
 ## Installation
 
@@ -25,16 +68,16 @@ Medusa multivendor marketplace plugin
 
         ```json
         "scripts": {
-          "postinstall": "node node_modules/medusa-marketplace-plugin/.medusa/server/patch-admin.js",
+          "postinstall": "node node_modules/@techlabi/medusa-marketplace-plugin/.medusa/server/src/patch-admin.js",
           // ... other scripts ...
         }
         ```
 
     3.  **Run installation:**
-        Execute the installation process using npm:
+        Execute the installation process using yarn:
 
         ```bash
-        npm install
+        yarn
         ```
 
         This `postinstall` script will automatically execute after all dependencies are installed, applying the necessary patch.
@@ -53,10 +96,16 @@ Medusa multivendor marketplace plugin
         },
       },
       projectConfig: { ... },
+      plugins: [
+        {
+          resolve: "@techlabi/medusa-marketplace-plugin",
+          options: {},
+        },
+      ],
     })
     ```
 
-    This code helps to resolve an issue similar to [https://github.com/medusajs/medusa/issues/11248](https://github.com/medusajs/medusa/issues/11248).
+    This code connect plugin and helps to resolve an issue similar to [https://github.com/medusajs/medusa/issues/11248](https://github.com/medusajs/medusa/issues/11248).
 
 4.  Run database migrations:
 
@@ -67,7 +116,7 @@ Medusa multivendor marketplace plugin
 5.  Start the project:
 
     ```bash
-    npm run dev
+    yarn dev
     ```
 
 ## Creating a Super Admin
@@ -76,3 +125,8 @@ To create a super admin, use the following `curl` request:
 
 ```bash
 curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", "password": "supersecret"}' -H 'Content-Type: application/json' -H 'Authorization: supersecret'
+```
+
+## Contributing
+
+Feel free to contribute to this plugin by submitting pull requests or creating issues for bug reports and feature requests.

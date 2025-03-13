@@ -1,0 +1,32 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract latest changelog entry
+        id: changelog
+        run: |
+          VERSION="${{ github.ref_name }}"
+          awk "/## $VERSION/{flag=1; next} /## /{if(flag) exit} flag" CHANGELOG.md > temp_changelog.txt
+          echo "LOG=$(cat temp_changelog.txt | sed ':a;N;$!ba;s/\n/\\n/g')" >> $GITHUB_ENV
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          body: ${{ env.LOG }}
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

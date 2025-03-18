@@ -6,7 +6,12 @@ on:
       - main
 
 jobs:
-  test:
+  check:
+    if: |
+      contains(github.event.pull_request.title, 'release') == true &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main'
+
     runs-on: ubuntu-latest
 
     steps:

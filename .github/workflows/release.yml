@@ -1,32 +1,105 @@
-name: Release
+name: Create Release on PR
 
 on:
-  push:
-    tags:
-      - '*'
+  pull_request:
+    types:
+      - closed
 
 jobs:
-  release:
+  publish:
+    if: |
+      contains(github.event.pull_request.title, 'release') == true &&
+      github.event.pull_request.merged == true &&
+      github.event.pull_request.base.ref == 'main'
+
+    runs-on: ubuntu-latest
+        
+    steps:
+                
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Install node
+        uses: actions/setup-node@v4
+        with:
+            node-version: '20.x'
+            registry-url: 'https://registry.npmjs.org'
+        
+      - name: Run npm install
+        run: npm ci
+        
+      - name: Run npm build
+        run: npm run build
+
+      - name: Publish
+        run: npm publish --access public
+        env:
+            NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  create-release:
+    needs: publish
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Extract latest changelog entry
-        id: changelog
+      - name: Extract Version
+        id: extract-version
         run: |
-          VERSION="${{ github.ref_name }}"
-          awk "/## $VERSION/{flag=1; next} /## /{if(flag) exit} flag" CHANGELOG.md > temp_changelog.txt
-          echo "LOG=$(cat temp_changelog.txt | sed ':a;N;$!ba;s/\n/\\n/g')" >> $GITHUB_ENV
+          # Use grep to find the first occurrence of the version number matching "## 0.0.0" pattern
+          version=$(grep -m 1 -oP '## \d+\.\d+\.\d+' CHANGELOG.md | cut -d ' ' -f 2)
+          echo "version=$version" >> $GITHUB_ENV
+      
+            - name: Get version from package.json
+        id: get-package-version
+        run: |
+          package_version=$(grep -oP '"version": "\K[0-9]+\.[0-9]+\.[0-9]+' package.json)
+          echo "package_version=$package_version" >> $GITHUB_ENV
+  
+      - name: Get version from package-lock.json
+        id: get-package-lock-version
+        run: |
+            package_lock_version=$(grep -oP '"version": "\K[0-9]+\.[0-9]+\.[0-9]+' package-lock.json | head -n 1)
+            echo "package_lock_version=$package_lock_version" >> $GITHUB_ENV
+  
+      - name: Compare Versions
+        run: |
+            if [ "$version" != "$package_version" ]; then
+              echo "Version mismatch: CHANGELOG version ($version) does not match package.json version ($package_version)"
+              exit 1
+            elif [ "$version" != "$package_lock_version" ]; then
+              echo "Version mismatch: CHANGELOG version ($version) does not match package-lock.json version ($package_lock_version)"
+              exit 1
+            else
+              echo "Versions match: $version"
+            fi
+  
+      - name: Check PR title for version
+        run: |
+            pr_title="${{ github.event.pull_request.title }}"
+            if [[ "$pr_title" != *"$version"* ]]; then
+              echo "Version $version is not mentioned in the PR title."
+              exit 1
+            else
+              echo "PR title contains version $version"
+            fi
 
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          name: Release ${{ github.ref_name }}
-          body: ${{ env.LOG }}
-          draft: false
-          prerelease: false
+      - name: Extract Changelog
+        id: extract-changelog
+        run: |
+          # Extract the content between the last two version headers
+          changelog=$(awk '/^## [0-9]+\.[0-9]+\.[0-9]+/{if (!version) {version=$0; next}} /^## [0-9]+\.[0-9]+\.[0-9]+/{exit} {if (version) description = description ORS $0} END {if (version) print description}' CHANGELOG.md | sed -e '/^## [0-9]+\.[0-9]+\.[0-9]+/d; s/^# //' > changelog.txt)
+          echo "changelog_file=changelog.txt" >> $GITHUB_ENV
+
+      - name: Create Release
+        id: create-release
+        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.version }}
+          release_name: ${{ env.version }}
+          body_path: ${{ env.changelog_file }}
+          draft: false
+          prerelease: false

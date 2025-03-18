@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0
+
+### Fix
+- Fixed `package.json`
+
 ## 0.11.0
 
 ### Chore

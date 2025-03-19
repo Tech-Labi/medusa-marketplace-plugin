@@ -1,0 +1,60 @@
+name: Check version
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  check:
+    if: |
+      contains(github.event.pull_request.title, 'release') == true &&
+      github.event.pull_request.base.ref == 'main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Extract Version
+        id: extract-version
+        run: |
+          # Use grep to find the first occurrence of the version number matching "## 0.0.0" pattern
+          version=$(grep -m 1 -oP '## \d+\.\d+\.\d+' CHANGELOG.md | cut -d ' ' -f 2)
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Get version from package.json
+        id: get-package-version
+        run: |
+          package_version=$(grep -oP '"version": "\K[0-9]+\.[0-9]+\.[0-9]+' package.json)
+          echo "package_version=$package_version" >> $GITHUB_ENV
+  
+      - name: Get version from package-lock.json
+        id: get-package-lock-version
+        run: |
+            package_lock_version=$(grep -oP '"version": "\K[0-9]+\.[0-9]+\.[0-9]+' package-lock.json | head -n 1)
+            echo "package_lock_version=$package_lock_version" >> $GITHUB_ENV
+  
+      - name: Compare Versions
+        run: |
+            if [ "$version" != "$package_version" ]; then
+              echo "Version mismatch: CHANGELOG version ($version) does not match package.json version ($package_version)"
+              exit 1
+            elif [ "$version" != "$package_lock_version" ]; then
+              echo "Version mismatch: CHANGELOG version ($version) does not match package-lock.json version ($package_lock_version)"
+              exit 1
+            else
+              echo "Versions match: $version"
+            fi
+  
+      - name: Check PR title for version
+        run: |
+            pr_title="${{ github.event.pull_request.title }}"
+            if [[ "$pr_title" != *"$version"* ]]; then
+              echo "Version $version is not mentioned in the PR title."
+              exit 1
+            else
+              echo "PR title contains version $version"
+            fi

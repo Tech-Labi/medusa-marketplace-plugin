@@ -46,7 +46,13 @@ Key features include:
 
 ## Installation
 
-1.  Add the following variables to your `.env` file:
+1.  Add plugin:
+   
+    ```
+    yarn add @techlabi/medusa-marketplace-plugin
+    ```
+
+2.  Add the following variables to your `.env` file:
 
     ```
     API_KEY=supersecret
@@ -56,7 +62,7 @@ Key features include:
     * `API_KEY` - The secret key used to create the super admin.
     * `VITE_BACKEND_URL` - The URL of your Medusa backend, required for custom admin components.
 
-2.  **Apply `postinstall` patch:**
+3.  **Apply `postinstall` patch:**
 
     To ensure proper setup, follow these steps:
 
@@ -82,7 +88,7 @@ Key features include:
 
         This `postinstall` script will automatically execute after all dependencies are installed, applying the necessary patch.
 
-3.  Add the following code to your `medusa-config.ts` file:
+4.  Add the following code to your `medusa-config.ts` file:
 
     ```typescript
     module.exports = defineConfig({
@@ -107,13 +113,13 @@ Key features include:
 
     This code connect plugin and helps to resolve an issue similar to [https://github.com/medusajs/medusa/issues/11248](https://github.com/medusajs/medusa/issues/11248).
 
-4.  Run database migrations:
+5.  Run database migrations:
 
     ```bash
     npx medusa db:migrate
     ```
 
-5.  Start the project:
+6.  Start the project:
 
     ```bash
     yarn dev

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0
+
+### Misc
+- export all utild functions from `patch-admin.ts`
+
 ## 0.12.0
 
 ### Fix

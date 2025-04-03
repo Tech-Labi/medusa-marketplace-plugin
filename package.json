@@ -75,5 +75,8 @@
     "@medusajs/icons": "^2.6.1",
     "@medusajs/js-sdk": "^2.6.1",
     "@medusajs/types": "^2.6.1"
+  },
+  "optionalDependencies": {
+    "@rollup/rollup-linux-x64-gnu": "4.39.0"
   }
 }

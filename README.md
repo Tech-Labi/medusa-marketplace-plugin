@@ -4,15 +4,15 @@ This plugin transforms your Medusa store into a robust multivendor marketplace.
 
 ## Main Features
 
+* **Store Creation:**
+    * The plugin provides an intuitive interface for creating new vendor stores, simplifying the onboarding process for new sellers.
+* **Entity Separation:**
+    * The plugin ensures that each store has its own independent set of entities (customers, orders, products, etc.), preventing data conflicts and ensuring privacy.
 * **Impersonation:**
     * Super admins can seamlessly switch between vendor accounts, enabling them to:
         * View the marketplace from a vendor's perspective.
         * Troubleshoot issues efficiently.
         * Provide personalized support.
-* **Store Creation:**
-    * The plugin provides an intuitive interface for creating new vendor stores, simplifying the onboarding process for new sellers.
-* **Entity Separation:**
-    * The plugin ensures that each store has its own independent set of entities (customers, orders, products, etc.), preventing data conflicts and ensuring privacy.
 
 ## Functionality Overview
 

@@ -1,25 +1,34 @@
 # Changelog
 
+## 0.14.0
+
+### Bug fixes
+
+- Allow regular merchants to retrieve regions
+
 ## 0.13.0
 
 ### Misc
-- export all utild functions from `patch-admin.ts`
+
+- export all utils functions from `patch-admin.ts`
 
 ## 0.12.0
 
-### Fix
+### Misc
+
 - Fixed `package.json`
 
 ## 0.11.0
 
-### Chore
-- Fixed `CHANGELOG.md`.
-- Updated docs and configs: `CONTRIBUTING.md`, `README.md`, `package.json`, `yarn.lock`.
-- Updated workflows and scripts: `.github/workflows/release.yml`, `src/patch-admin.ts`.
+### Misc
 
-### Additionally
+- Updated docs and configs: `CONTRIBUTING.md`, `README.md`, `package.json`, `yarn.lock`
+- Updated workflows and scripts: `.github/workflows/release.yml`, `src/patch-admin.ts`
+- Fixed `CHANGELOG.md`
+
+### Misc
+
 - `medusa-js` version updated to `2.6.1`.
-
 
 ## 0.10.0
 

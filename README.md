@@ -136,3 +136,8 @@ curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", 
 ## Contributing
 
 Feel free to contribute to this plugin by submitting pull requests or creating issues for bug reports and feature requests.
+
+
+## License
+
+Apache 2.0

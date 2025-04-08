@@ -14,7 +14,6 @@ export const adminRegionsRoutesMiddlewares: MiddlewareRoute[] = [
                 AdminGetRegionsParams,
                 QueryConfig.listTransformQueryConfig
             ),
-            blockDataForUser(UserType.VENDOR),
             moveIdsToQueryFromFilterableFields,
         ],
     },

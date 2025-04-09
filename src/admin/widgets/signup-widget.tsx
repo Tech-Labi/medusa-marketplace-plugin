@@ -1,14 +1,12 @@
 import { defineWidgetConfig } from "@medusajs/admin-sdk";
-import SignupForm from "../components/signup-form"
+import SignupForm from "../components/signup-form";
 import DrawerComponent from "../components/drawer";
 
 const SignupWidget = () => {
   return (
-    <div>
-      <p className="text-center mt-4">
-        No business account?{" "}
-        <DrawerComponent title="Sign Up" content={<SignupForm />} />
-      </p>
+    <div className="flex flex-col">
+      <p className="text-center text-sm mb-2">or</p>
+      <DrawerComponent title="Sign Up" content={<SignupForm />} />
     </div>
   );
 };

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.15.0
+
+### Improvements
+
+- Updated Sign Up widget button
+
 ## 0.14.0
 
 ### Bug fixes

@@ -2,7 +2,7 @@ import { Button, Drawer } from "@medusajs/ui";
 
 type DrawerComponentProps = {
   title: string;
-  content: any
+  content: any;
 };
 
 export default function DrawerComponent({
@@ -12,7 +12,7 @@ export default function DrawerComponent({
   return (
     <Drawer>
       <Drawer.Trigger asChild>
-        <Button>{title}</Button>
+        <Button className="w-[280px]">{title}</Button>
       </Drawer.Trigger>
       <Drawer.Content>
         <Drawer.Header>

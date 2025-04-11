@@ -133,10 +133,13 @@ To create a super admin, use the following `curl` request:
 curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", "password": "supersecret"}' -H 'Content-Type: application/json' -H 'Authorization: supersecret'
 ```
 
+## Demo app
+
+https://github.com/Tech-Labi/medusa2-marketplace-demo
+
 ## Contributing
 
 Feel free to contribute to this plugin by submitting pull requests or creating issues for bug reports and feature requests.
-
 
 ## License
 

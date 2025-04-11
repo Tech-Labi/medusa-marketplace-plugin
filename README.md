@@ -104,13 +104,9 @@ The plugin was created as a result of a four-part series articles on Medium re h
     yarn dev
     ```
 
-## Creating a Super Admin
+## Demo app
 
-To create a super admin, use the following `curl` request:
-
-```bash
-curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", "password": "supersecret"}' -H 'Content-Type: application/json' -H 'Authorization: supersecret'
-```
+https://github.com/Tech-Labi/medusa2-marketplace-demo
 
 ## Functionality Overview
 
@@ -142,10 +138,13 @@ Key features included:
         * `user-store.ts`
     * This architecture allows vendors to operate independently while maintaining a cohesive marketplace experience for customers.
 
+## Creating a Super Admin
 
-## Demo app
+To create a super admin, use the following `curl` request:
 
-https://github.com/Tech-Labi/medusa2-marketplace-demo
+```bash
+curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", "password": "supersecret"}' -H 'Content-Type: application/json' -H 'Authorization: supersecret'
+```
 
 ## Contributing
 

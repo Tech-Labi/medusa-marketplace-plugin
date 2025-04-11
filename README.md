@@ -2,6 +2,15 @@
 
 This plugin transforms your Medusa store into a robust multivendor marketplace.
 
+## Background 
+
+The plugin was created as a result of a four-part series articles on Medium re how to create multivendor marketplace with Medusa 2.0:
+
+- 🛠 [**Part 1**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-a-dev-guide-f55aec971126): setting up the multi-vendor structure and understanding how to manage multiple sellers on a single Medusa instance
+- 🧑‍💼 [**Part 2**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-super-admin-d899353b0b1e): building a powerful Super Admin layer to oversee vendors, products, orders, and more
+- 🎨 [**Part 3**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-dashboard-customization-part-3-6ce584b8c1c1): customizing the Medusa Admin Dashboard to give super admins and vendors a clean, user-friendly experience
+- 🎨 [**Part 4**](): bring it all together - packaging everything into a Medusa 2 plugin 
+
 ## Main Features
 
 * **Store Creation:**
@@ -16,7 +25,7 @@ This plugin transforms your Medusa store into a robust multivendor marketplace.
 
 ## Functionality Overview
 
-Key features include:
+Key features included:
 
 * **Super Admin Role:**
     * Introduces a super admin role with the ability to manage all aspects of the marketplace.

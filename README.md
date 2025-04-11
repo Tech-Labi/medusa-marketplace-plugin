@@ -11,7 +11,7 @@ The plugin was created as a result of a four-part series articles on Medium re h
 - 🎨 [**Part 3**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-dashboard-customization-part-3-6ce584b8c1c1): customizing the Medusa Admin Dashboard to give super admins and vendors a clean, user-friendly experience
 - 🎨 [**Part 4**](): bring it all together - packaging everything into a Medusa 2 plugin 
 
-## Main Features
+## Features
 
 * **Store Creation:**
     * The plugin provides an intuitive interface for creating new vendor stores, simplifying the onboarding process for new sellers.

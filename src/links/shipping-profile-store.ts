@@ -3,6 +3,12 @@ import FulfillmentModule from "@medusajs/medusa/fulfillment";
 import StoreModule from "@medusajs/medusa/store";
 
 export default defineLink(
-  FulfillmentModule.linkable.shippingProfile,
-  StoreModule.linkable.store
+  {
+    linkable: FulfillmentModule.linkable.shippingProfile,
+    isList: true
+  },
+  {
+    linkable: StoreModule.linkable.store,
+    isList: true
+  }
 );

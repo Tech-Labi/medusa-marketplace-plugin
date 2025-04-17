@@ -71,15 +71,6 @@ The plugin was created as a result of a four-part series articles on Medium re h
 
     ```typescript
     module.exports = defineConfig({
-      admin: {
-        vite: () => {
-          return {
-            optimizeDeps: {
-              include: ["qs"],
-            },
-          };
-        },
-      },
       projectConfig: { ... },
       plugins: [
         {

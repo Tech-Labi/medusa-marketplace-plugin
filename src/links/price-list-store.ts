@@ -3,6 +3,12 @@ import PRICING from "@medusajs/medusa/pricing";
 import StoreModule from "@medusajs/medusa/store";
 
 export default defineLink(
-  PRICING.linkable.priceList,
-  StoreModule.linkable.store
-);
+  {
+    linkable: PRICING.linkable.priceList,
+    isList: true
+  },
+  {
+    linkable: StoreModule.linkable.store,
+    isList: true,
+  }
+)

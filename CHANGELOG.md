@@ -1,10 +1,20 @@
 # Changelog
 
-## 0.16.0
+## 0.17.0
 
 ### Bug fixes
 
 - adopt `patch-admin.ts` to medusa 2.7.1
+
+## 0.16.0
+
+### Improvements
+
+- Split product collection per store
+
+### Misc
+
+- `medusa-js` version updated to `2.7.0`.
 
 ## 0.15.0
 

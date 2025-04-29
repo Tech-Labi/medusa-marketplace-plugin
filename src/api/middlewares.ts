@@ -13,6 +13,7 @@ import { adminOrderRoutesMiddlewares } from "./admin/orders/middlewares";
 import { adminProductsRoutesMiddlewares } from "./admin/products/middlewares";
 import { adminUsersRoutesMiddlewares } from "./admin/users/middlewares";
 import { storesRoutesMiddlewares } from "./stores/middlewares";
+import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares";
 
 export default defineMiddlewares({
   routes: [
@@ -34,5 +35,6 @@ export default defineMiddlewares({
     ...adminCustomerRoutesMiddlewares,
     ...adminApiKeyRoutesMiddlewares,
     ...adminOrderRoutesMiddlewares,
+    ...adminCollectionRoutesMiddlewares,
   ],
 });

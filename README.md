@@ -2,7 +2,16 @@
 
 This plugin transforms your Medusa store into a robust multivendor marketplace.
 
-## Main Features
+## Background 
+
+The plugin was created as a result of a four-part series articles on Medium re how to create multivendor marketplace with Medusa 2.0:
+
+- 🛠 [**Part 1**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-a-dev-guide-f55aec971126): setting up the multi-vendor structure and understanding how to manage multiple sellers on a single Medusa instance
+- 🧑‍💼 [**Part 2**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-super-admin-d899353b0b1e): building a powerful Super Admin layer to oversee vendors, products, orders, and more
+- 🎨 [**Part 3**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-dashboard-customization-part-3-6ce584b8c1c1): customizing the Medusa Admin Dashboard to give super admins and vendors a clean, user-friendly experience
+- 🎨 [**Part 4**](https://medium.com/@igorkhomenko/building-a-multivendor-marketplace-with-medusa-js-2-0-medusa-plugin-part-4-a4c7ac08f2d4): bring it all together - packaging everything into a Medusa 2 plugin 
+
+## Features
 
 * **Store Creation:**
     * The plugin provides an intuitive interface for creating new vendor stores, simplifying the onboarding process for new sellers.
@@ -13,36 +22,6 @@ This plugin transforms your Medusa store into a robust multivendor marketplace.
         * View the marketplace from a vendor's perspective.
         * Troubleshoot issues efficiently.
         * Provide personalized support.
-
-## Functionality Overview
-
-Key features include:
-
-* **Super Admin Role:**
-    * Introduces a super admin role with the ability to manage all aspects of the marketplace.
-    * Super admins can:
-        * Create and manage multiple vendor stores.
-        * Impersonate vendor accounts to troubleshoot and provide support.
-        * Access and analyze data across all stores.
-* **Vendor Store Management:**
-    * Enables the creation of individual vendor stores, each with its own:
-        * **Customer Base:** Independent customer lists for each vendor.
-        * **Order Management:** Separate order tracking and fulfillment.
-        * **Price Lists:** Unique pricing strategies for each vendor.
-        * **Product Catalogs:** Distinct product offerings per store.
-        * **Shipping Profiles:** Tailored shipping options.
-        * **Stock Locations:** Independent inventory management.
-        * **User Accounts:** Vendor-specific user management.
-* **Data Separation:**
-    * The plugin ensures clear separation of data between stores using Medusa's module links:
-        * `customer-store.ts`
-        * `order-store.ts`
-        * `price-list-store.ts`
-        * `product-store.ts`
-        * `shipping-profile-store.ts`
-        * `stock-location-store.ts`
-        * `user-store.ts`
-    * This architecture allows vendors to operate independently while maintaining a cohesive marketplace experience for customers.
 
 ## Installation
 
@@ -92,15 +71,6 @@ Key features include:
 
     ```typescript
     module.exports = defineConfig({
-      admin: {
-        vite: () => {
-          return {
-            optimizeDeps: {
-              include: ["qs"],
-            },
-          };
-        },
-      },
       projectConfig: { ... },
       plugins: [
         {
@@ -125,6 +95,40 @@ Key features include:
     yarn dev
     ```
 
+## Demo app
+
+https://github.com/Tech-Labi/medusa2-marketplace-demo
+
+## Functionality Overview
+
+Key features included:
+
+* **Super Admin Role:**
+    * Introduces a super admin role with the ability to manage all aspects of the marketplace.
+    * Super admins can:
+        * Create and manage multiple vendor stores.
+        * Impersonate vendor accounts to troubleshoot and provide support.
+        * Access and analyze data across all stores.
+* **Vendor Store Management:**
+    * Enables the creation of individual vendor stores, each with its own:
+        * **Customer Base:** Independent customer lists for each vendor.
+        * **Order Management:** Separate order tracking and fulfillment.
+        * **Price Lists:** Unique pricing strategies for each vendor.
+        * **Product Catalogs:** Distinct product offerings per store.
+        * **Shipping Profiles:** Tailored shipping options.
+        * **Stock Locations:** Independent inventory management.
+        * **User Accounts:** Vendor-specific user management.
+* **Data Separation:**
+    * The plugin ensures clear separation of data between stores using Medusa's module links:
+        * `customer-store.ts`
+        * `order-store.ts`
+        * `price-list-store.ts`
+        * `product-store.ts`
+        * `shipping-profile-store.ts`
+        * `stock-location-store.ts`
+        * `user-store.ts`
+    * This architecture allows vendors to operate independently while maintaining a cohesive marketplace experience for customers.
+
 ## Creating a Super Admin
 
 To create a super admin, use the following `curl` request:
@@ -136,7 +140,6 @@ curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", 
 ## Contributing
 
 Feel free to contribute to this plugin by submitting pull requests or creating issues for bug reports and feature requests.
-
 
 ## License
 

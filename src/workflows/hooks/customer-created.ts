@@ -6,16 +6,19 @@ createCustomersWorkflow.hooks.customersCreated(
   async ({ customers }, { container }) => {
     console.log("HOOK customersCreated", customers);
 
-    const loggedInUser = container.resolve("loggedInUser") as UserDTO;
-    await Promise.all(
-      customers.map(({ id }) =>
-        linkCustomerToStoreWorkflow(container).run({
-          input: {
-            customerId: id,
-            userId: loggedInUser.id,
-          },
-        })
-      )
-    );
+    if (container.hasRegistration("loggedInUser")) {
+      const loggedInUser = container.resolve("loggedInUser") as UserDTO;
+      console.log('loggedInUser', loggedInUser);
+      await Promise.all(
+        customers.map(({ id }) =>
+          linkCustomerToStoreWorkflow(container).run({
+            input: {
+              customerId: id,
+              userId: loggedInUser.id,
+            },
+          })
+        )
+      );
+    }
   }
 );

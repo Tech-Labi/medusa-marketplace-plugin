@@ -1,10 +1,16 @@
 # Changelog
 
-## 0.17.0
+## 0.18.0
 
 ### Bug fixes
 
-- adopt `patch-admin.ts` to medusa 2.7.1
+- Fixed customer-created.ts
+
+## 0.17.0
+
+### Improvements
+
+- Adopt to `medusa-js` 2.7.1
 
 ## 0.16.0
 

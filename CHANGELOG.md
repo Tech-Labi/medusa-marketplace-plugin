@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.16.0
+
+### Bug fixes
+
+- adopt `patch-admin.ts` to medusa 2.7.1
+
 ## 0.15.0
 
 ### Improvements

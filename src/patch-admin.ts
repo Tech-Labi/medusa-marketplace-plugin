@@ -97,8 +97,8 @@ export const writeFile = (lines: string[], filePath: string) => {
 
 ////////////////////////////// usage /////////////////////////////
 
-const APP_MJS_PATH = `${process.cwd()}/node_modules/@medusajs/dashboard/dist/app.mjs`;
 const VITE_CACHE_PATH = `${process.cwd()}/node_modules/@medusajs/admin-bundler/node_modules/.vite`;
+const VITE_CACHE_PATH_MEDUSA_2_7_1 = `${process.cwd()}/node_modules/.vite`;
 const LOGIN_PATH = findFilePathByNamePattern("login-", ".mjs");
 const REST_PASSWORD_PATH = findFilePathByNamePattern("reset-password-", ".mjs");
 
@@ -124,83 +124,89 @@ lines = removeOccurrence(lines, "LogoBox");
 writeFile(lines, REST_PASSWORD_PATH);
 
 // // 4) hide documentation and changelog links from menu
-lines = readFileAsLines(APP_MJS_PATH);
-lines.forEach((line: string, index: number) => {
-  if (line.includes("app.menus.user.documentation")) {
-    lines[index - 3] = "";
-    lines[index - 2] = "";
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-  }
-
-  if (line.includes("app.menus.user.changelog")) {
-    lines[index - 2] = "";
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-  }
-  // hide sales channels from settings
-  if (line.includes('label: t2("salesChannels.domain"),')) {
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-    lines[index + 2] = "";
-  }
-  // hide workflows from settings
-  if (line.includes('label: t2("workflowExecutions.domain"),')) {
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-    lines[index + 2] = "";
-  }
-  // hide return reasons from settings
-  if (line.includes('label: t2("returnReasons.domain"),')) {
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-    lines[index + 2] = "";
-  }
-  // hide product types from settings
-  if (line.includes('label: t2("productTypes.domain"),')) {
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-    lines[index + 2] = "";
-  }
-  // hide product tags from settings
-  if (line.includes('label: t2("productTags.domain"),')) {
-    lines[index - 1] = "";
-    lines[index] = "";
-    lines[index + 1] = "";
-    lines[index + 2] = "";
-  }
-  // hide inventory from sidebar
-  if (line.includes('label: t2("inventory.domain"),')) {
-    for (let i = -2; i <= 8; i++) {
-      lines[index + i] = "";
+const CHUNK_2 = findChunkFileByContainingText("app.menus.user.documentation");
+if (CHUNK_2) {
+  lines = readFileAsLines(CHUNK_2);
+  lines.forEach((line: string, index: number) => {
+    if (line.includes("app.menus.user.documentation")) {
+      lines[index - 3] = "";
+      lines[index - 2] = "";
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
     }
-  }
-  // hide promotions from sidebar
-  if (line.includes('label: t2("promotions.domain"),')) {
-    for (let i = -2; i <= 8; i++) {
-      lines[index + i] = "";
-    }
-  }
-});
-writeFile(lines, APP_MJS_PATH);
 
-// // 5) add Impersonate block
-lines = readFileAsLines(APP_MJS_PATH);
-lines.forEach((line: string, index: number) => {
-  if (line.includes("var MainLayout")) {
-    const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted",children:[jsx14("p",{children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
-    lines[index] = newCode;
-    lines[index + 1] = "";
-    lines[index + 2] = "";
-  }
-});
-writeFile(lines, APP_MJS_PATH);
+    if (line.includes("app.menus.user.changelog")) {
+      lines[index - 2] = "";
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
+    }
+    // hide sales channels from settings
+    if (line.includes('label: t2("salesChannels.domain"),')) {
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
+      lines[index + 2] = "";
+    }
+    // hide workflows from settings
+    if (line.includes('label: t2("workflowExecutions.domain"),')) {
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
+      lines[index + 2] = "";
+    }
+    // hide return reasons from settings
+    if (line.includes('label: t2("returnReasons.domain"),')) {
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
+      lines[index + 2] = "";
+    }
+    // hide product types from settings
+    if (line.includes('label: t2("productTypes.domain"),')) {
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
+      lines[index + 2] = "";
+    }
+    // hide product tags from settings
+    if (line.includes('label: t2("productTags.domain"),')) {
+      lines[index - 1] = "";
+      lines[index] = "";
+      lines[index + 1] = "";
+      lines[index + 2] = "";
+    }
+    // hide inventory from sidebar
+    if (line.includes('label: t2("inventory.domain"),')) {
+      for (let i = -2; i <= 8; i++) {
+        lines[index + i] = "";
+      }
+    }
+    // hide promotions from sidebar
+    if (line.includes('label: t2("promotions.domain"),')) {
+      for (let i = -2; i <= 8; i++) {
+        lines[index + i] = "";
+      }
+    }
+  });
+  writeFile(lines, CHUNK_2);
+}
+
+// 5) add Impersonate block
+const CHUNK_3 = findChunkFileByContainingText("var MainLayout");
+if (CHUNK_3) {
+  lines = readFileAsLines(CHUNK_3);
+  lines.forEach((line: string, index: number) => {
+    if (line.includes("var MainLayout")) {
+      const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted",children:[jsx14("p",{children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
+      lines[index] = newCode;
+      lines[index + 1] = "";
+      lines[index + 2] = "";
+    }
+  });
+  writeFile(lines, CHUNK_3);
+}
 
 // Reset Vite cache
 if (fs.existsSync(VITE_CACHE_PATH)) {
@@ -208,4 +214,10 @@ if (fs.existsSync(VITE_CACHE_PATH)) {
   console.log("Vite cache cleared successfully.");
 } else {
   console.log("Vite cache directory not found.");
+}
+if (fs.existsSync(VITE_CACHE_PATH_MEDUSA_2_7_1)) {
+  fs.rmSync(VITE_CACHE_PATH_MEDUSA_2_7_1, { recursive: true, force: true });
+  console.log("Vite cache (2.7.1) cleared successfully.");
+} else {
+  console.log("Vite cache (2.7.1) directory not found.");
 }

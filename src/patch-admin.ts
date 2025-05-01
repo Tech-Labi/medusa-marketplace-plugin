@@ -2,7 +2,7 @@ const fs = require("fs");
 
 ////////////////////////////// utils /////////////////////////////
 
-export const findFilePathByNamePattern = (
+export const findFilesPathByNamePattern = (
   filePattern: string,
   fileExtension: string
 ) => {
@@ -12,18 +12,19 @@ export const findFilePathByNamePattern = (
   const files = fs.readdirSync(dirPath);
 
   // Find the first file that matches the pattern
-  const fileName = files.find(
+  const fileNames = files.filter(
     (file: string) =>
       file.startsWith(filePattern) && file.endsWith(fileExtension)
   );
 
-  if (!fileName) {
+  if (fileNames.length === 0) {
     throw new Error(`No file found matching pattern: ${filePattern}`);
   }
 
-  const filePath = `${dirPath}/${fileName}`;
-
-  return filePath;
+  return fileNames.map((fileName: string) => {
+    const filePath = `${dirPath}/${fileName}`;
+    return filePath;
+  });
 };
 
 export function findChunkFileByContainingText(text: string) {
@@ -99,8 +100,11 @@ export const writeFile = (lines: string[], filePath: string) => {
 
 const VITE_CACHE_PATH = `${process.cwd()}/node_modules/@medusajs/admin-bundler/node_modules/.vite`;
 const VITE_CACHE_PATH_MEDUSA_2_7_1 = `${process.cwd()}/node_modules/.vite`;
-const LOGIN_PATH = findFilePathByNamePattern("login-", ".mjs");
-const REST_PASSWORD_PATH = findFilePathByNamePattern("reset-password-", ".mjs");
+const LOGIN_PATHS = findFilesPathByNamePattern("login-", ".mjs");
+const REST_PASSWORD_PATHS = findFilesPathByNamePattern(
+  "reset-password-",
+  ".mjs"
+);
 
 // 1) Welcome to Medusa -> Welcome to Marketplace
 let lines: string[];
@@ -114,16 +118,20 @@ if (CHUNK_1) {
 }
 
 // 2) hide avatar logo on login page
-lines = readFileAsLines(LOGIN_PATH);
-lines = removeOccurrence(lines, "AvatarBox");
-writeFile(lines, LOGIN_PATH);
+LOGIN_PATHS.forEach((path: string) => {
+  lines = readFileAsLines(path);
+  lines = removeOccurrence(lines, "AvatarBox");
+  writeFile(lines, path);
+});
 
 // 3) hide avatar logo on reset password page
-lines = readFileAsLines(REST_PASSWORD_PATH);
-lines = removeOccurrence(lines, "LogoBox");
-writeFile(lines, REST_PASSWORD_PATH);
+REST_PASSWORD_PATHS.forEach((path: string) => {
+  lines = readFileAsLines(path);
+  lines = removeOccurrence(lines, "LogoBox");
+  writeFile(lines, path);
+});
 
-// // 4) hide documentation and changelog links from menu
+// 4) hide documentation and changelog links from menu
 const CHUNK_2 = findChunkFileByContainingText("app.menus.user.documentation");
 if (CHUNK_2) {
   lines = readFileAsLines(CHUNK_2);

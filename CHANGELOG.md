@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.19.0
+
+### Bug fixes
+
+- adopt `patch-admin.ts` to medusa-js 2.7.1
+
 ## 0.18.0
 
 ### Bug fixes

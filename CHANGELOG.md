@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.20.0
+
+### Features
+
+- introduce `ALLOW_API_KEYS_FOR_VENDORS` env to allow API keys management for regular vendors
+
 ## 0.19.0
 
 ### Bug fixes

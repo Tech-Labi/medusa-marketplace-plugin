@@ -6,6 +6,10 @@
 
 - introduce `ALLOW_API_KEYS_FOR_VENDORS` env to allow API keys management for regular vendors
 
+### Misc
+
+- update Medusa to 2.8.3
+
 ## 0.19.0
 
 ### Bug fixes

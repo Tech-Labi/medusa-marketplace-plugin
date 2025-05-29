@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.20.0
+## 0.22.0
 
 ### Features
 
@@ -8,7 +8,19 @@
 
 ### Misc
 
-- update Medusa to 2.8.3
+- `medusa-js` version updated to `2.8.3`.
+
+## 0.21.0
+
+### Misc
+
+- `medusa-js` version updated to `2.8.0`.
+
+## 0.20.0
+
+### Misc
+
+- `medusa-js` version updated to `2.7.1`.
 
 ## 0.19.0
 

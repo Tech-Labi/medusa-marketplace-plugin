@@ -15,9 +15,4 @@ export const storesRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/stores/super",
     middlewares: [checkApiKey],
   },
-  {
-    method: ["POST"],
-    matcher: "/stores/multi",
-    middlewares: [registerLoggedInUser],
-  },
 ];

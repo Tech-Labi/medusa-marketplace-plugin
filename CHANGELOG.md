@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.22.0
+
+### Features
+
+- introduce `ALLOW_API_KEYS_FOR_VENDORS` env to allow API keys management for regular vendors
+
+### Misc
+
+- `medusa-js` version updated to `2.8.3`.
+
+## 0.21.0
+
+### Misc
+
+- `medusa-js` version updated to `2.8.0`.
+
+## 0.20.0
+
+### Misc
+
+- `medusa-js` version updated to `2.7.1`.
+
 ## 0.19.0
 
 ### Bug fixes

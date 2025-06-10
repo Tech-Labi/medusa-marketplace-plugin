@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.23.0
+
+### Features
+
+- Multi-store capabilities
+
 ## 0.22.0
 
 ### Features

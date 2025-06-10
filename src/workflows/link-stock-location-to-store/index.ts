@@ -6,7 +6,6 @@ import { StockLocationDTO } from "@medusajs/framework/types";
 export type LinkStockLocationToStoreInput = {
   stockLocations: StockLocationDTO[];
   storeId?: string;
-  userId: string;
 };
 
 export const linkStockLocationToStoreWorkflow = createWorkflow(

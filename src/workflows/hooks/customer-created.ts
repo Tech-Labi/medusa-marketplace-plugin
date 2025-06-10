@@ -6,7 +6,6 @@ createCustomersWorkflow.hooks.customersCreated(async ({ customers }, { container
   console.log("HOOK customersCreated", customers);
 
   if (container.hasRegistration("currentStore")) {
-    // const loggedInUser = container.resolve("loggedInUser") as UserDTO;
     const currentStore = container.resolve("currentStore") as StoreDTO;
     console.log("currentStore", currentStore);
     await Promise.all(

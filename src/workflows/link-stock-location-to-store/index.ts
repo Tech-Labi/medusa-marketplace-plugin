@@ -1,38 +1,26 @@
-import {
-  createWorkflow,
-  transform,
-  when,
-  WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk";
-import { getStoreStep } from "../link-product-to-store/steps/get-store";
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+
 import { linkStockLocationsToStoreStep } from "./steps/link-stock-location-to-store";
 import { StockLocationDTO } from "@medusajs/framework/types";
 
 export type LinkStockLocationToStoreInput = {
   stockLocations: StockLocationDTO[];
-  userId: string;
+  storeId?: string;
 };
 
 export const linkStockLocationToStoreWorkflow = createWorkflow(
   "link-stock-location-to-store",
   (input: LinkStockLocationToStoreInput) => {
-    const { stockLocations, userId } = input;
+    const { stockLocations, storeId } = input;
 
-    const stock_location_ids = transform({ stockLocations }, (data) =>
-      data.stockLocations.map(({ id }) => id)
-    );
+    const stock_location_ids = transform({ stockLocations }, (data) => data.stockLocations.map(({ id }) => id));
 
-    const stockLocationStoreLinks = when(
-      "check-is-need-to-link-store-to-stock-location",
-      input,
-      (input) => {
-        return !!input.userId;
-      }
-    ).then(() => {
-      const store = getStoreStep({ userId });
+    const stockLocationStoreLinks = when("check-is-need-to-link-store-to-stock-location", input, (input) => {
+      return !!input.storeId;
+    }).then(() => {
       return linkStockLocationsToStoreStep({
         stock_location_ids,
-        store_id: store.id,
+        store_id: storeId,
       });
     });
 

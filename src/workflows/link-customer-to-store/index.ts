@@ -1,9 +1,4 @@
-import {
-  createWorkflow,
-  transform,
-  when,
-  WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk";
+import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
 import { linkCustomerToStoreStep } from "./steps/link-customer-to-store";
 import { getStoreStep } from "../link-product-to-store/steps/get-store";
 
@@ -29,8 +24,8 @@ export const linkCustomerToStoreWorkflow = createWorkflow(
     );
 
     const customerStoreLinkArray = linkCustomerToStoreStep({
-        customerId: input.customerId,
-        storeId,
+      customerId: input.customerId,
+      storeId,
     });
 
     return new WorkflowResponse({

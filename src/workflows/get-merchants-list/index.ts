@@ -13,7 +13,7 @@ export type GetMerchantsListWorkflowInput = {
 export const getMerchantsListWorkflow = createWorkflow(
   "get-merchants-list-workflow",
   (input: GetMerchantsListWorkflowInput) => {
-    const store = getStoreStep(input.userId);
+    const store = getStoreStep({ userId: input.userId });
 
     const isSuperAdmin = transform({ store }, (data) => !data.store);
 

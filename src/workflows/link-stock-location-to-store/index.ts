@@ -29,13 +29,13 @@ export const linkStockLocationToStoreWorkflow = createWorkflow(
         return !!input.userId;
       }
     ).then(() => {
-      const store = getStoreStep(userId);
+      const store = getStoreStep({ userId });
       return linkStockLocationsToStoreStep({
         stock_location_ids,
         store_id: store.id,
       });
     });
 
-    return new WorkflowResponse({ stockLocations, stockLocationStoreLinks })
+    return new WorkflowResponse({ stockLocations, stockLocationStoreLinks });
   }
 );

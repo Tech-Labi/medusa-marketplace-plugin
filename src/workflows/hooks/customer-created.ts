@@ -1,6 +1,7 @@
 import { UserDTO } from "@medusajs/framework/types";
 import { createCustomersWorkflow } from "@medusajs/medusa/core-flows";
 import { linkCustomerToStoreWorkflow } from "../link-customer-to-store";
+import { linkCustomersToSalesChannelWorkflow } from "../link-customer-to-sales-channel";
 
 createCustomersWorkflow.hooks.customersCreated(
   async ({ customers }, { container }) => {
@@ -8,17 +9,30 @@ createCustomersWorkflow.hooks.customersCreated(
 
     if (container.hasRegistration("loggedInUser")) {
       const loggedInUser = container.resolve("loggedInUser") as UserDTO;
-      console.log('loggedInUser', loggedInUser);
-      await Promise.all(
-        customers.map(({ id }) =>
-          linkCustomerToStoreWorkflow(container).run({
-            input: {
-              customerId: id,
-              userId: loggedInUser.id,
-            },
-          })
-        )
-      );
+      console.log("loggedInUser", loggedInUser);
+      if (!loggedInUser?.metadata?.is_super_admin) {
+        await Promise.all(
+          customers.map(({ id }) =>
+            linkCustomerToStoreWorkflow(container).run({
+              input: {
+                customerId: id,
+                userId: loggedInUser.id,
+              },
+            })
+          )
+        );
+      }
     }
+
+    customers.forEach(({ id, metadata }) => {
+      if (metadata?.sales_channel_id) {
+        linkCustomersToSalesChannelWorkflow(container).run({
+          input: {
+            customer_id: id,
+            sales_channel_id: metadata.sales_channel_id as string,
+          },
+        })
+      }
+    });
   }
 );

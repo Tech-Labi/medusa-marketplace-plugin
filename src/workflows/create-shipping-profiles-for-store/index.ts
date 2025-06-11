@@ -30,7 +30,7 @@ export const createShippingProfilesForStoreWorkflow = createWorkflow(
                 return !!input.userId
             }
         ).then(() => {
-            const store = getStoreStep(userId)
+            const store = getStoreStep({ userId })
             return linkShippingProfilesToStoreStep({
                 shipping_profile_ids,
                 store_id: store.id,

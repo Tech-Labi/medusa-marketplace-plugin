@@ -13,7 +13,7 @@ export type LinkProductCollectionToStoreInput = {
 export const linkProductCollectionToStoreWorkflow = createWorkflow(
   "link-product-collection-to-store",
   (input: LinkProductCollectionToStoreInput) => {
-    const store = getStoreStep(input.userId);
+    const store = getStoreStep({ userId: input.userId });
 
     const collectionStoreLinkArray = linkProductCollectionToStoreStep({
       collectionId: input.collectionId,

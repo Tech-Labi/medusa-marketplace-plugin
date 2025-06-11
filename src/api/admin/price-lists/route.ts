@@ -14,7 +14,7 @@ export const POST = async (
   const workflow = createPriceListsForStoreWorkflow(req.scope);
   const loggedInUser = req.scope.resolve("loggedInUser") as UserDTO;
   const { result } = await workflow.run({
-    input: { price_lists_data: [req.validatedBody], userId: loggedInUser.id },
+    input: { price_lists_data: [req.validatedBody], user: loggedInUser },
   });
 
   const price_list = await fetchPriceList(

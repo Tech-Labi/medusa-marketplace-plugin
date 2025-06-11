@@ -13,7 +13,7 @@ export type LinkProductToStoreInput = {
 export const linkProductToStoreWorkflow = createWorkflow(
   "link-product-to-store",
   (input: LinkProductToStoreInput) => {
-    const store = getStoreStep(input.userId);
+    const store = getStoreStep({ userId: input.userId });
 
     const productStoreLinkArray = linkProductToStoreStep({
       productId: input.productId,

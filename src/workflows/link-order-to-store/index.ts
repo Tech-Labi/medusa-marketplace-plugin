@@ -19,7 +19,7 @@ export const linkOrderToStoreWorkflow = createWorkflow(
     const storeIdFromUser = when("check_user_id", input, (input) => {
       return !!input.userId;
     }).then(() => {
-      const store = getStoreStep(input.userId);
+      const store = getStoreStep({ userId: input.userId });
       return store.id;
     });
 

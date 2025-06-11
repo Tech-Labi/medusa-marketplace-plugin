@@ -1,6 +1,7 @@
 import { createProductsWorkflow } from "@medusajs/medusa/core-flows";
 import { UserDTO } from "@medusajs/framework/types";
 import { linkProductToStoreWorkflow } from "../link-product-to-store";
+import { createProductPriceListPricesWorkflow } from "../create-product-price-list-prices";
 
 createProductsWorkflow.hooks.productsCreated(
   async ({ products }, { container }) => {
@@ -17,5 +18,12 @@ createProductsWorkflow.hooks.productsCreated(
         })
       )
     );
+
+    await createProductPriceListPricesWorkflow(container).run({
+      input: {
+        products,
+        userId: loggedInUser.id,
+      },
+    });
   }
 );

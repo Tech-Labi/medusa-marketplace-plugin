@@ -8,6 +8,7 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
   const { result } = await getMerchantsListWorkflow(req.scope).run({
     input: {
       userId: loggedInUser.id,
+      isSuperAdmin: !!loggedInUser.metadata?.is_super_admin,
     },
   });
 

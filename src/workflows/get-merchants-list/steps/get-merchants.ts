@@ -20,9 +20,9 @@ export const getMerchantsStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
     const { data: users } = await query.graph({
-      entity: "user",
-      fields: ["id", "email", "store.name"],
-      filters: isSuperAdmin ? {} : { id: userId },
+      entity: "user_store",
+      fields: ["id", "user.email", "store.name"],
+      filters: isSuperAdmin ? {} : { user_id: userId },
     });
 
     const merchants: MerchantDTO[] = users

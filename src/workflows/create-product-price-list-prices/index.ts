@@ -5,8 +5,10 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
 import { ProductDTO } from "@medusajs/types";
-import { createPriceListPricesWorkflow } from "@medusajs/medusa/core-flows";
-import { getStoreStep } from "../link-product-to-store/steps/get-store";
+import {
+  createPriceListPricesWorkflow,
+  useQueryGraphStep,
+} from "@medusajs/medusa/core-flows";
 import { getProductPriceListPricesStep } from "./steps/get-product-price-lists-prices";
 
 export const createProductPriceListPricesWorkflowId =
@@ -14,17 +16,23 @@ export const createProductPriceListPricesWorkflowId =
 
 export interface CreateProductPriceListPricesWorkflowInput {
   products: ProductDTO[];
-  userId: string;
+  storeId: string;
 }
 
 export const createProductPriceListPricesWorkflow = createWorkflow(
   createProductPriceListPricesWorkflowId,
   (input: WorkflowData<CreateProductPriceListPricesWorkflowInput>) => {
-    const { products, userId } = input;
-    const store = getStoreStep({
-      userId,
-      fields: ["store.supported_currencies.*"],
+    const { products, storeId } = input;
+
+    const { data: stores } = useQueryGraphStep({
+      entity: "store",
+      fields: ["*", "supported_currencies.*"],
+      filters: {
+        id: storeId,
+      },
     });
+
+    const [store] = stores;
 
     const data = transform({ store, products }, ({ store, products }) => {
       const currencyCodes = store.supported_currencies.map(

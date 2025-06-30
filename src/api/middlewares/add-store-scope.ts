@@ -32,7 +32,21 @@ export async function addStoreScope(req: MedusaRequest, res: MedusaResponse, nex
     req.scope.register({
       currentStore: asValue({ id }),
     });
+  } else if (loggedInUser.metadata?.is_super_admin) {
+    const { data: stores } = await query.graph({
+      entity: "store",
+      fields: ["id", "name"],
+      filters: {
+        metadata: [
+          {
+            is_super_admin: true,
+          },
+        ],
+      },
+    });
+    req.scope.register({
+      currentStore: asValue({ id: stores[0].id }),
+    });
   }
-
   return next();
 }

@@ -1,28 +1,22 @@
-import {
-  createWorkflow,
-  WorkflowResponse,
-} from "@medusajs/framework/workflows-sdk";
-import { getStoreStep } from "../link-product-to-store/steps/get-store";
+import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
 import { linkProductCollectionToStoreStep } from "./steps/link-product-collection-to-store";
 
 export type LinkProductCollectionToStoreInput = {
   collectionId: string;
-  userId: string;
+  storeId: string;
 };
 
 export const linkProductCollectionToStoreWorkflow = createWorkflow(
   "link-product-collection-to-store",
   (input: LinkProductCollectionToStoreInput) => {
-    const store = getStoreStep({ userId: input.userId });
-
     const collectionStoreLinkArray = linkProductCollectionToStoreStep({
       collectionId: input.collectionId,
-      storeId: store.id,
+      storeId: input.storeId,
     });
 
     return new WorkflowResponse({
       collectionStoreLinkArray,
-      store,
+      store: { id: input.storeId },
     });
   }
 );

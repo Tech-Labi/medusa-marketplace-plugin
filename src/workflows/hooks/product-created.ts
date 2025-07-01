@@ -19,11 +19,13 @@ createProductsWorkflow.hooks.productsCreated(
       )
     );
 
-    await createProductPriceListPricesWorkflow(container).run({
-      input: {
-        products,
-        storeId: currentStore.id,
-      },
-    });
+    if (process.env.IS_CHANNEL_PRICING_ENABLED) {
+      await createProductPriceListPricesWorkflow(container).run({
+        input: {
+          products,
+          storeId: currentStore.id,
+        },
+      });
+    }
   }
 );

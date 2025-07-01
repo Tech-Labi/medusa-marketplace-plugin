@@ -32,7 +32,7 @@ export const createProductPriceListPricesWorkflow = createWorkflow(
       },
     });
 
-    const [store] = stores;
+    const store = stores[0];
 
     const data = transform({ store, products }, ({ store, products }) => {
       const currencyCodes = store.supported_currencies.map(

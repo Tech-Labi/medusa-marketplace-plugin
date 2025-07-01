@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.26.0
+
+### Features
+
+- Multi-store channel pricing
+
 ## 0.25.0
 
 ### Bug fixes

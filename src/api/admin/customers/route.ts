@@ -3,7 +3,7 @@ import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/
 import { AdditionalData, HttpTypes } from "@medusajs/framework/types";
 import { refetchCustomer } from "@medusajs/medusa/api/admin/customers/helpers";
 import { AdminCreateCustomerType } from "@medusajs/medusa/api/admin/customers/validators";
-import { createCustomersWorkflow } from "../../../workflows/create-customer";
+import { createCustomCustomersWorkflow } from "../../../workflows/create-customer";
 
 export const POST = async (
   req: AuthenticatedMedusaRequest<AdminCreateCustomerType & AdditionalData>,
@@ -11,7 +11,7 @@ export const POST = async (
 ) => {
   const { additional_data, ...rest } = req.validatedBody;
 
-  const createCustomers = createCustomersWorkflow(req.scope);
+  const createCustomers = createCustomCustomersWorkflow(req.scope);
 
   const customersData = [
     {

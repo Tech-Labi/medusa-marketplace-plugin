@@ -5,10 +5,9 @@ import {
   WorkflowData,
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
+import { createCustomersWorkflow } from "@medusajs/medusa/core-flows";
 import { AdditionalData, CreateCustomerDTO } from "@medusajs/types";
-import { createCustomersWithDublicateValidationStep } from "./steps/create-customers";
-import { emitEventStep } from "@medusajs/medusa/core-flows";
-import { CustomerWorkflowEvents } from "@medusajs/framework/utils";
+import { validateCustomersDublicationStep } from "./steps/validate-customers-dublication";
 
 export type CreateCustomersWorkflowInput = {
   customersData: CreateCustomerDTO[];
@@ -16,28 +15,25 @@ export type CreateCustomersWorkflowInput = {
 
 export const createCustomersWorkflowId = "create-customers-multi-store";
 
-export const createCustomersWorkflow = createWorkflow(
+export const createCustomCustomersWorkflow = createWorkflow(
   createCustomersWorkflowId,
   (input: WorkflowData<CreateCustomersWorkflowInput>) => {
-    const { createdCustomers, allCustomers } = createCustomersWithDublicateValidationStep(input.customersData);
+    const { customersToCreate, existingCustomers } = validateCustomersDublicationStep(input.customersData);
 
-    const customersCreated = createHook("customersCreated", {
-      customers: allCustomers,
+    const createdCustomers = createCustomersWorkflow.runAsStep({ input: { customersData: customersToCreate } });
+
+    const customers = transform({ createdCustomers, existingCustomers }, ({ createdCustomers, existingCustomers }) => {
+      return [...createdCustomers, ...existingCustomers];
+    });
+
+    const customersCreated = createHook("customersStoreLink", {
+      createdCustomers: createdCustomers,
+      existingCustomers: existingCustomers,
+      customers: customers,
       additional_data: input.additional_data,
     });
 
-    const customerIdEvents = transform({ createdCustomers }, ({ createdCustomers }) => {
-      return createdCustomers.map((v) => {
-        return { id: v.id };
-      });
-    });
-
-    emitEventStep({
-      eventName: CustomerWorkflowEvents.CREATED,
-      data: customerIdEvents,
-    });
-
-    return new WorkflowResponse(allCustomers, {
+    return new WorkflowResponse(customers, {
       hooks: [customersCreated],
     });
   }

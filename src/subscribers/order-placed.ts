@@ -1,35 +1,22 @@
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
 import { IOrderModuleService } from "@medusajs/framework/types";
-import {
-  ContainerRegistrationKeys,
-  OrderWorkflowEvents,
-} from "@medusajs/framework/utils";
+import { ContainerRegistrationKeys, OrderWorkflowEvents } from "@medusajs/framework/utils";
 import { Modules } from "@medusajs/framework/utils";
 import productStoreLink from "../links/product-store";
 import { linkOrderToStoreWorkflow } from "../workflows/link-order-to-store";
 import { linkCustomerToStoreWorkflow } from "../workflows/link-customer-to-store";
 
-export default async function orderPlacedHandler({
-  event: { data },
-  container,
-}: SubscriberArgs<{ id: string }>) {
+export default async function orderPlacedHandler({ event: { data }, container }: SubscriberArgs<{ id: string }>) {
   try {
     console.log("orderPlacedHandler data", data);
 
     const orderId = data.id;
-    const orderModuleService: IOrderModuleService = container.resolve(
-      Modules.ORDER
-    );
+    const orderModuleService: IOrderModuleService = container.resolve(Modules.ORDER);
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
     // retrieve order
     const order = await orderModuleService.retrieveOrder(orderId, {
-      relations: [
-        "items",
-        "shipping_address",
-        "billing_address",
-        "shipping_methods",
-      ],
+      relations: ["items", "shipping_address", "billing_address", "shipping_methods"],
     });
     console.log("order", order);
 
@@ -58,7 +45,7 @@ export default async function orderPlacedHandler({
       // link customer to store
       await linkCustomerToStoreWorkflow(container).run({
         input: {
-          customerId: order.customer_id,
+          customersId: [order.customer_id],
           storeId,
         },
       });

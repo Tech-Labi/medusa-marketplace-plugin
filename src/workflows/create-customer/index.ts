@@ -8,6 +8,7 @@ import {
 import { createCustomersWorkflow } from "@medusajs/medusa/core-flows";
 import { AdditionalData, CreateCustomerDTO } from "@medusajs/types";
 import { validateCustomersDublicationStep } from "./steps/validate-customers-dublication";
+import { linkCustomerToStoreWorkflow } from "../link-customer-to-store";
 
 export type CreateCustomersWorkflowInput = {
   customersData: CreateCustomerDTO[];
@@ -26,10 +27,17 @@ export const createCustomCustomersWorkflow = createWorkflow(
       return [...createdCustomers, ...existingCustomers];
     });
 
+    const customersId = transform(
+      { createdCustomers, existingCustomers },
+      ({ createdCustomers, existingCustomers }) => {
+        return [...createdCustomers, ...existingCustomers].map((customer) => customer.id);
+      }
+    );
+
+    const customerStoreLinkArray = linkCustomerToStoreWorkflow.runAsStep({ input: { customersId: customersId } });
+
     const customersCreated = createHook("customersStoreLink", {
-      createdCustomers: createdCustomers,
-      existingCustomers: existingCustomers,
-      customers: customers,
+      customerStoreLinkArray,
       additional_data: input.additional_data,
     });
 

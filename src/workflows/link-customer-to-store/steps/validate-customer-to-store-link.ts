@@ -12,16 +12,15 @@ export const validateLinkCustomerToStoreStep = createStep(
       entity: customerStoreLink.entryPoint,
       fields: ["*", "customer.email"],
       filters: {
-        customer_id: data.customerId,
+        customer_id: [...data.customersId],
+        store_id: data.storeId,
       },
     });
 
-    const existCustomerStoreLink = customerStores.find((customerStore) => customerStore.store_id === data.storeId);
-
-    if (existCustomerStoreLink) {
+    if (customerStores?.length) {
       throw new MedusaError(
         MedusaError.Types.DUPLICATE_ERROR,
-        `Customer with this email ${existCustomerStoreLink.customer.email} already exist in this store`
+        `Customer with this email ${customerStores[0].customer.email} already exist in this store`
       );
     }
   }

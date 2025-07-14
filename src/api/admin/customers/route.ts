@@ -1,5 +1,4 @@
 import { AuthenticatedMedusaRequest, MedusaResponse } from "@medusajs/framework/http";
-
 import { AdditionalData, HttpTypes } from "@medusajs/framework/types";
 import { refetchCustomer } from "@medusajs/medusa/api/admin/customers/helpers";
 import { AdminCreateCustomerType } from "@medusajs/medusa/api/admin/customers/validators";

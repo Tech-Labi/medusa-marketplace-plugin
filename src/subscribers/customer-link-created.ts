@@ -1,11 +1,10 @@
 import { SubscriberArgs, type SubscriberConfig } from "@medusajs/framework";
+import { CustomerWorkflowEvents as MedusaCustomerWorkflowEvents } from "@medusajs/framework/utils";
 
 export const CustomerWorkflowEvents = {
-  CREATED: "customer.created",
-  UPDATED: "customer.updated",
-  DELETED: "customer.deleted",
+  ...MedusaCustomerWorkflowEvents,
   LINKED: "customer.linked",
-};
+} as const;
 
 export default async function customerLinkCreatedHandler({
   event: { data },

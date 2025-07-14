@@ -1,10 +1,10 @@
 import { Link } from "@medusajs/framework/modules-sdk";
-import { ContainerRegistrationKeys, MedusaError, Modules } from "@medusajs/framework/utils";
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { StoreDTO } from "@medusajs/types";
-import customerStoreLink from "../../../links/customer-store";
+
 export type LinkCustomerToStoreStepInput = {
-  customerId: string;
+  customersId: string[];
   storeId?: string;
 };
 
@@ -15,30 +15,40 @@ export const linkCustomerToStoreStep = createStep(
 
     const currentStore = container.resolve("currentStore") as StoreDTO;
 
-    const linkArray = link.create({
-      [Modules.CUSTOMER]: {
-        customer_id: data.customerId,
-      },
-      [Modules.STORE]: {
-        store_id: data?.storeId || currentStore.id,
-      },
-    });
+    const store_id = data?.storeId || currentStore.id;
 
-    return new StepResponse(linkArray, {
-      customerId: data.customerId,
-      storeId: data?.storeId || currentStore.id,
+    const linkArray = data.customersId.map((customerId) =>
+      link.create({
+        [Modules.CUSTOMER]: {
+          customer_id: customerId,
+        },
+        [Modules.STORE]: {
+          store_id: store_id,
+        },
+      })
+    );
+
+    await Promise.all(linkArray);
+
+    return new StepResponse(null, {
+      customersId: data.customersId,
+      storeId: store_id,
     });
   },
-  async ({ customerId, storeId }, { container }) => {
+  async ({ customersId, storeId }, { container }) => {
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
-    link.dismiss({
-      [Modules.CUSTOMER]: {
-        customer_id: customerId,
-      },
-      [Modules.STORE]: {
-        store_id: storeId,
-      },
-    });
+    const dismissArray = customersId.map((customerId) =>
+      link.dismiss({
+        [Modules.CUSTOMER]: {
+          customer_id: customerId,
+        },
+        [Modules.STORE]: {
+          store_id: storeId,
+        },
+      })
+    );
+
+    await Promise.all(dismissArray);
   }
 );

@@ -6,7 +6,7 @@ import { validateLinkCustomerToStoreStep } from "./steps/validate-customer-to-st
 import { getCurrentStoreStep } from "./steps/get-current-store";
 
 export type LinkCustomerToStoreInput = {
-  customersId: string[];
+  customerIds: string[];
   storeId?: string;
 };
 
@@ -26,12 +26,12 @@ export const linkCustomerToStoreWorkflow = createWorkflow(
     );
 
     validateLinkCustomerToStoreStep({
-      customersId: input.customersId,
+      customerIds: input.customerIds,
       storeId,
     });
 
     const customerStoreLinkArray = linkCustomerToStoreStep({
-      customersId: input.customersId,
+      customerIds: input.customerIds,
       storeId,
     });
 

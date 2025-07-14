@@ -45,7 +45,7 @@ export default async function orderPlacedHandler({ event: { data }, container }:
       // link customer to store
       await linkCustomerToStoreWorkflow(container).run({
         input: {
-          customersId: [order.customer_id],
+          customerIds: [order.customer_id],
           storeId,
         },
       });

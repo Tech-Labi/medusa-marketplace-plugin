@@ -4,7 +4,7 @@ import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { StoreDTO } from "@medusajs/types";
 
 export type LinkCustomerToStoreStepInput = {
-  customersId: string[];
+  customerIds: string[];
   storeId?: string;
 };
 
@@ -17,7 +17,7 @@ export const linkCustomerToStoreStep = createStep(
 
     const store_id = data?.storeId || currentStore.id;
 
-    const linkArray = data.customersId.map((customerId) =>
+    const linkArray = data.customerIds.map((customerId) =>
       link.create({
         [Modules.CUSTOMER]: {
           customer_id: customerId,
@@ -31,14 +31,14 @@ export const linkCustomerToStoreStep = createStep(
     await Promise.all(linkArray);
 
     return new StepResponse(null, {
-      customersId: data.customersId,
+      customerIds: data.customerIds,
       storeId: store_id,
     });
   },
-  async ({ customersId, storeId }, { container }) => {
+  async ({ customerIds, storeId }, { container }) => {
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
-    const dismissArray = customersId.map((customerId) =>
+    const dismissArray = customerIds.map((customerId) =>
       link.dismiss({
         [Modules.CUSTOMER]: {
           customer_id: customerId,

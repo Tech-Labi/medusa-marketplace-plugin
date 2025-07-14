@@ -27,14 +27,14 @@ export const createCustomCustomersWorkflow = createWorkflow(
       return [...createdCustomers, ...existingCustomers];
     });
 
-    const customersId = transform(
+    const customerIds = transform(
       { createdCustomers, existingCustomers },
       ({ createdCustomers, existingCustomers }) => {
         return [...createdCustomers, ...existingCustomers].map((customer) => customer.id);
       }
     );
 
-    const customerStoreLinkArray = linkCustomerToStoreWorkflow.runAsStep({ input: { customersId: customersId } });
+    const customerStoreLinkArray = linkCustomerToStoreWorkflow.runAsStep({ input: { customerIds: customerIds } });
 
     const customersCreated = createHook("customersStoreLink", {
       customerStoreLinkArray,

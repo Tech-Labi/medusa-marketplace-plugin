@@ -12,7 +12,7 @@ export const validateLinkCustomerToStoreStep = createStep(
       entity: customerStoreLink.entryPoint,
       fields: ["*", "customer.email"],
       filters: {
-        customer_id: [...data.customersId],
+        customer_id: [...data.customerIds],
         store_id: data.storeId,
       },
     });

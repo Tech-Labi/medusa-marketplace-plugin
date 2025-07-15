@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.27.0
+
+### Bug fixes
+
+- Bug fixes duplicate customer error when signing up with the same email across multiple stores
+
 ## 0.26.0
 
 ### Features

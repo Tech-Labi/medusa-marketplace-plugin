@@ -144,5 +144,3 @@ Feel free to contribute to this plugin by submitting pull requests or creating i
 ## License
 
 Apache 2.0
-
-TEMP

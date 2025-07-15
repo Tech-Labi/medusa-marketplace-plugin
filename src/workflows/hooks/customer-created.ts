@@ -1,8 +1,9 @@
 import { createCustomersWorkflow } from "@medusajs/medusa/core-flows";
 import { linkCustomersToSalesChannelWorkflow } from "../link-customer-to-sales-channel";
 
-createCustomersWorkflow.hooks.customersCreated(async ({ customers }, { container }) => {
-  console.log("HOOK customersCreated", customers);
+createCustomersWorkflow.hooks.customersCreated(
+  async ({ customers }, { container }) => {
+    console.log("HOOK customersCreated", customers);
 
   if (process.env.IS_CHANNEL_PRICING_ENABLED) {
     customers.forEach(({ id, metadata }) => {
@@ -16,4 +17,4 @@ createCustomersWorkflow.hooks.customersCreated(async ({ customers }, { container
       }
     });
   }
-});
+);

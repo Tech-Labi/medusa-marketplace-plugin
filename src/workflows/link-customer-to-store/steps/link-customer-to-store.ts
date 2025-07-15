@@ -1,44 +1,54 @@
 import { Link } from "@medusajs/framework/modules-sdk";
 import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
+import { StoreDTO } from "@medusajs/types";
 
-type LinkCustomerToStoreStepInput = {
-  customerId: string;
-  storeId: string;
+export type LinkCustomerToStoreStepInput = {
+  customerIds: string[];
+  storeId?: string;
 };
 
 export const linkCustomerToStoreStep = createStep(
   "link-customer-to-store-step",
-  async (
-    { customerId, storeId }: LinkCustomerToStoreStepInput,
-    { container }
-  ) => {
+  async (data: LinkCustomerToStoreStepInput, { container }) => {
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
-    const linkArray = link.create({
-      [Modules.CUSTOMER]: {
-        customer_id: customerId,
-      },
-      [Modules.STORE]: {
-        store_id: storeId,
-      },
-    });
+    const currentStore = container.resolve("currentStore") as StoreDTO;
 
-    return new StepResponse(linkArray, {
-      customerId,
-      storeId,
+    const store_id = data?.storeId || currentStore.id;
+
+    const linkArray = data.customerIds.map((customerId) =>
+      link.create({
+        [Modules.CUSTOMER]: {
+          customer_id: customerId,
+        },
+        [Modules.STORE]: {
+          store_id: store_id,
+        },
+      })
+    );
+
+    await Promise.all(linkArray);
+
+    return new StepResponse(null, {
+      customerIds: data.customerIds,
+      storeId: store_id,
     });
   },
-  async ({ customerId, storeId }, { container }) => {
+  async ({ customerIds, storeId }, { container }) => {
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
-    link.dismiss({
-      [Modules.CUSTOMER]: {
-        customer_id: customerId,
-      },
-      [Modules.STORE]: {
-        store_id: storeId,
-      },
-    });
+    const dismissArray = customerIds.map((customerId) =>
+      link.dismiss({
+        [Modules.CUSTOMER]: {
+          customer_id: customerId,
+        },
+        [Modules.STORE]: {
+          store_id: storeId,
+        },
+      })
+    );
+
+    await Promise.all(dismissArray);
   }
 );

@@ -1,31 +1,43 @@
 import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { emitEventStep } from "@medusajs/medusa/core-flows";
+import { CustomerWorkflowEvents } from "../../subscribers/customer-link-created";
 import { linkCustomerToStoreStep } from "./steps/link-customer-to-store";
-import { getStoreStep } from "../link-product-to-store/steps/get-store";
+import { validateLinkCustomerToStoreStep } from "./steps/validate-customer-to-store-link";
+import { getCurrentStoreStep } from "./steps/get-current-store";
 
 export type LinkCustomerToStoreInput = {
-  customerId: string;
+  customerIds: string[];
   storeId?: string;
-  userId?: string;
 };
 
 export const linkCustomerToStoreWorkflow = createWorkflow(
   "link-customer-to-store-workflow",
   (input: LinkCustomerToStoreInput) => {
-    const storeIdFromUser = when("check_user_id", input, (input) => {
-      return !!input.userId;
+    const storeIdFromApi = when("check_store_id", input, (input) => {
+      return !input.storeId;
     }).then(() => {
-      const store = getStoreStep({ userId: input.userId });
+      const store = getCurrentStoreStep();
       return store.id;
     });
 
     const storeId = transform(
-      { storeId: input.storeId, storeIdFromUser },
-      (data) => data.storeId || data.storeIdFromUser
+      { storeId: input.storeId, storeIdFromApi },
+      (data) => data.storeId || data.storeIdFromApi
     );
 
-    const customerStoreLinkArray = linkCustomerToStoreStep({
-      customerId: input.customerId,
+    validateLinkCustomerToStoreStep({
+      customerIds: input.customerIds,
       storeId,
+    });
+
+    const customerStoreLinkArray = linkCustomerToStoreStep({
+      customerIds: input.customerIds,
+      storeId,
+    });
+
+    emitEventStep({
+      eventName: CustomerWorkflowEvents.LINKED,
+      data: customerStoreLinkArray,
     });
 
     return new WorkflowResponse({

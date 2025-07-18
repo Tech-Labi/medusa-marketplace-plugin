@@ -21,7 +21,7 @@ export const getMerchantsStep = createStep(
 
     const { data: users } = await query.graph({
       entity: "user_store",
-      fields: ["id", "user.email", "store.name"],
+      fields: ["id", "user.email", "store.name", "user_id"],
       filters: isSuperAdmin ? {} : { user_id: userId },
     });
 
@@ -30,7 +30,8 @@ export const getMerchantsStep = createStep(
       .map((u) => ({
         id: u.id,
         store_name: u.store.name,
-        user_email: u.email,
+        user_email: u.user.email,
+        user_id: u.user_id,
         status: "active",
         can_impersonate: isSuperAdmin,
       }));

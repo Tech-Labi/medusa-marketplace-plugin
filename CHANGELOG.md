@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.28.0
+
+### Improvements
+
+- Improved GET merchants route - add user email and user_id field in response
+
 ## 0.27.0
 
 ### Bug fixes

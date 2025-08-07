@@ -6,16 +6,23 @@ createCustomersWorkflow.hooks.customersCreated(
     console.log("HOOK customersCreated", customers);
 
     if (process.env.IS_CHANNEL_PRICING_ENABLED) {
+      const groupedBySalesChannel = new Map<string, string[]>();
+
       customers.forEach(({ id, metadata }) => {
-        if (metadata?.sales_channel_id) {
-          linkCustomersToSalesChannelWorkflow(container).run({
-            input: {
-              customer_id: id,
-              sales_channel_id: metadata.sales_channel_id as string,
-            },
-          });
-        }
+        const salesChannelId = metadata?.sales_channel_id as string;
+        if (!salesChannelId) return;
+
+        groupedBySalesChannel.set(salesChannelId, [
+          ...(groupedBySalesChannel.get(salesChannelId) ?? []),
+          id,
+        ]);
       });
+
+      for (const [sales_channel_id, customer_ids] of groupedBySalesChannel) {
+        linkCustomersToSalesChannelWorkflow(container).run({
+          input: { sales_channel_id, customer_ids },
+        });
+      }
     }
   }
 );

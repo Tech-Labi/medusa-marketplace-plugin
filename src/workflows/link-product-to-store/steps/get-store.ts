@@ -11,7 +11,7 @@ export const getStoreStep = createStep(
   async (input: GetStoreInput, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
     const { userId, fields: additionalFields } = input;
-    const fields = ["id", "email", "store.*"];
+    const fields = ["id", "email", "stores.*"];
 
     const { data: users } = await query.graph({
       entity: "user",
@@ -21,7 +21,7 @@ export const getStoreStep = createStep(
       },
     });
 
-    const store = users[0].store;
+    const store = users[0].stores[0];
 
     return new StepResponse(store);
   }

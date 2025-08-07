@@ -12,11 +12,10 @@ import { getSalesChannelStep } from "./steps/get-sales-channel";
 
 export type CreateStoreInput = {
   store_name: string;
-  // first_name: string;
-  // last_name: string;
   email: string;
   password: string;
   is_super_admin?: boolean;
+  metadata?: Record<string, any>;
 };
 
 export const createStoreWorkflow = createWorkflow(
@@ -24,23 +23,20 @@ export const createStoreWorkflow = createWorkflow(
   (input: CreateStoreInput) => {
     const salesChannel = getSalesChannelStep();
 
-    const storesData = transform(
-      { input, salesChannel },
-      (data) => [
-        {
-          name: data.input.store_name,
-          supported_currencies: [{ currency_code: "usd", is_default: true }],
-          default_sales_channel_id: data.salesChannel.id,
-          metadata: data.input.is_super_admin
-            ? { is_super_admin: true }
-            : undefined,
-        },
-      ]
-    );
-    
+    const storesData = transform({ input, salesChannel }, (data) => [
+      {
+        name: data.input.store_name,
+        supported_currencies: [{ currency_code: "usd", is_default: true }],
+        default_sales_channel_id: data.salesChannel.id,
+        metadata: data.input.is_super_admin
+          ? { ...data.input.metadata, is_super_admin: true }
+          : data.input.metadata,
+      },
+    ]);
+
     const stores = createStoresWorkflow.runAsStep({
       input: {
-        stores: storesData
+        stores: storesData,
       },
     });
 

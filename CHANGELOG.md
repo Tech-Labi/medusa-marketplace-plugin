@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.29.0
+
+### Bug fixes
+
+- Bug fixes "Could not resolve 'currentStore'.\n\nResolution path: currentStore" in link-customer-to-store-step
+
 ## 0.28.0
 
 ### Improvements

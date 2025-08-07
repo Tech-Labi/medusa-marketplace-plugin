@@ -1,6 +1,6 @@
 {
   "name": "@techlabi/medusa-marketplace-plugin",
-  "version": "0.28.0",
+  "version": "0.29.0",
   "description": "A multi-vendor Medusa plugin",
   "author": "TechLabi",
   "license": "Apache 2.0",
@@ -36,11 +36,11 @@
     "prepublishOnly": "medusa plugin:build"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "^2.8.6",
-    "@medusajs/cli": "^2.8.6",
-    "@medusajs/framework": "^2.8.6",
-    "@medusajs/medusa": "^2.8.6",
-    "@medusajs/test-utils": "^2.8.6",
+    "@medusajs/admin-sdk": "^2.8.7",
+    "@medusajs/cli": "^2.8.7",
+    "@medusajs/framework": "^2.8.7",
+    "@medusajs/medusa": "^2.8.7",
+    "@medusajs/test-utils": "^2.8.7",
     "@medusajs/ui": "^4.0.4",
     "@mikro-orm/cli": "6.4.3",
     "@mikro-orm/core": "6.4.3",
@@ -62,11 +62,11 @@
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "^2.8.6",
-    "@medusajs/cli": "^2.8.6",
-    "@medusajs/framework": "^2.8.6",
-    "@medusajs/medusa": "^2.8.6",
-    "@medusajs/test-utils": "^2.8.6",
+    "@medusajs/admin-sdk": "^2.8.7",
+    "@medusajs/cli": "^2.8.7",
+    "@medusajs/framework": "^2.8.7",
+    "@medusajs/medusa": "^2.8.7",
+    "@medusajs/test-utils": "^2.8.7",
     "@mikro-orm/cli": "6.4.3",
     "@mikro-orm/core": "6.4.3",
     "@mikro-orm/knex": "6.4.3",
@@ -79,9 +79,9 @@
     "node": ">=20"
   },
   "dependencies": {
-    "@medusajs/icons": "^2.8.6",
-    "@medusajs/js-sdk": "^2.8.6",
-    "@medusajs/types": "^2.8.6"
+    "@medusajs/icons": "^2.8.7",
+    "@medusajs/js-sdk": "^2.8.7",
+    "@medusajs/types": "^2.8.7"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "4.39.0"

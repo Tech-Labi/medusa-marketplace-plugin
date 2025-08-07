@@ -13,9 +13,15 @@ export const linkCustomerToStoreStep = createStep(
   async (data: LinkCustomerToStoreStepInput, { container }) => {
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
-    const currentStore = container.resolve("currentStore") as StoreDTO;
+    let currentStore: StoreDTO | undefined;
 
-    const store_id = data?.storeId || currentStore.id;
+    try {
+      currentStore = container.resolve("currentStore") as StoreDTO;
+    } catch (err) {
+      currentStore = undefined;
+    }
+
+    const store_id = data?.storeId || currentStore?.id;
 
     const linkArray = data.customerIds.map((customerId) =>
       link.create({

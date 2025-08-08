@@ -15,6 +15,7 @@ export async function POST(
     input: req.body,
   });
   res.json({
+    message: "Ok",
     user: result.user,
   });
 }

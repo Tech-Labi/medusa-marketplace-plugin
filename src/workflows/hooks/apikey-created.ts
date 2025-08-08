@@ -1,5 +1,5 @@
 import { createApiKeysWorkflow } from "@medusajs/medusa/core-flows";
-import { StoreDTO, UserDTO } from "@medusajs/framework/types";
+import { StoreDTO } from "@medusajs/framework/types";
 import { linkApiKeyToStoreWorkflow } from "../link-apikey-to-store";
 
 createApiKeysWorkflow.hooks.apiKeysCreated(async ({ apiKeys }, { container }) => {

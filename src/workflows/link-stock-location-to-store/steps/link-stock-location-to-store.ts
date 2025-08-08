@@ -5,7 +5,7 @@ import { StepResponse, createStep } from "@medusajs/framework/workflows-sdk";
 
 export type LinkStockLocationToStoreInput = {
     /**
-    * The id of the stock locations.
+    * The ids of the stock locations.
     */
     stock_location_ids: string[]
     /**

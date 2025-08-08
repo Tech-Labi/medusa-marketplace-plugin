@@ -18,11 +18,7 @@ export default function SignUpForm() {
     e.preventDefault();
 
     // Basic validation
-    if (
-      !storeName ||
-      !email ||
-      !password
-    ) {
+    if (!storeName || !email || !password) {
       toast.info("Error", {
         description: "Please fill in all fields.",
       });
@@ -53,10 +49,10 @@ export default function SignUpForm() {
         });
       }
     } catch (e) {
-      console.error("Store crete error", e);
-       toast.error("Error", {
-         description: "Unexpected error ocured",
-       });
+      console.error("Store create error", e);
+      toast.error("Error", {
+        description: "Unexpected error ocured",
+      });
     }
   };
 
@@ -65,9 +61,7 @@ export default function SignUpForm() {
       <Heading level="h2" className="mb-2">
         New store
       </Heading>
-      <Text className="mb-6">
-        Enter your store information
-      </Text>
+      <Text className="mb-6">Enter your store information</Text>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <Label htmlFor="storeName">Store Name</Label>

@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.30.0
+
+### Misc
+
+- `medusa-js` version updated to `2.8.8`.
+
+### Bug fixes
+
+- Bug fixes create regular store
+
+### Improvements
+
+- Improved multi-store channel pricing in linkCustomersToSalesChannelWorkflow
+
 ## 0.29.0
 
 ### Bug fixes

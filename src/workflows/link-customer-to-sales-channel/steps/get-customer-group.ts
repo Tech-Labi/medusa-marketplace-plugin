@@ -1,9 +1,9 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 
-export const getCustomerGroupStep = createStep(
+export const getCustomerGroupStep = createStep<string, string, void>(
   "get-customer-group",
-  async (salesChannelId: string, { container }) => {
+  async (sales_channel_id: string, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
     const { data: superAdmins } = await query.graph({
@@ -20,7 +20,7 @@ export const getCustomerGroupStep = createStep(
       entity: "sales_channel",
       fields: ["name"],
       filters: {
-        id: salesChannelId,
+        id: sales_channel_id,
       },
     });
 

@@ -5,32 +5,43 @@ import {
   WorkflowResponse,
 } from "@medusajs/framework/workflows-sdk";
 import { linkCustomersToCustomerGroupWorkflow } from "@medusajs/medusa/core-flows";
+import { linkCustomersToSalesChannelStep } from "./steps/link-customers-to-sales-channel";
 import { getCustomerGroupStep } from "./steps/get-customer-group";
 
 export const linkCustomersToSalesChannelWorkflowId =
-  "link-customers-to-customer-group-by-sales-channel";
+  "link-customers-to-sales-channel";
 
 export interface LinkCustomerToSalesChannelWorkflowInput {
   sales_channel_id: string;
-  customer_id: string;
+  customer_ids: string[];
 }
 
 export const linkCustomersToSalesChannelWorkflow = createWorkflow(
   linkCustomersToSalesChannelWorkflowId,
   (input: WorkflowData<LinkCustomerToSalesChannelWorkflowInput>) => {
+    const salesChannelCustomerLinks = when(
+      "sales-channel-exists",
+      input,
+      (input) => {
+        return !!input.sales_channel_id;
+      }
+    ).then(() => {
+      return linkCustomersToSalesChannelStep(input);
+    });
+
     const customerGroupId = getCustomerGroupStep(input.sales_channel_id);
 
-    when(customerGroupId, (customerGroupId) => {
-      return customerGroupId;
+    when("customer-group-exist", customerGroupId, (customerGroupId) => {
+      return !!customerGroupId;
     }).then(() => {
       linkCustomersToCustomerGroupWorkflow.runAsStep({
         input: {
           id: customerGroupId,
-          add: [input.customer_id],
+          add: input.customer_ids,
         },
       });
     });
 
-    return new WorkflowResponse(void 0);
+    return new WorkflowResponse({ customerGroupId, salesChannelCustomerLinks });
   }
 );

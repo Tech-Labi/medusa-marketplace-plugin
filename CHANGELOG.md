@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.31.0
+
+### Features
+
+- introduce `__VITE_DISABLE_SIGNUP_WIDGET__` env disable signup widget
+
 ## 0.30.0
 
 ### Misc

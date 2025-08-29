@@ -3,7 +3,14 @@ import SignupForm from "../components/signup-form";
 import DrawerComponent from "../components/drawer";
 
 const SignupWidget = () => {
-  return (
+  const disableSignupWidget =
+    //@ts-ignore
+    typeof __VITE_DISABLE_SIGNUP_WIDGET__ !== "undefined"
+      ? //@ts-ignore
+        __VITE_DISABLE_SIGNUP_WIDGET__
+      : false;
+
+  return disableSignupWidget ? null : (
     <div className="flex flex-col">
       <p className="text-center text-sm mb-2">or</p>
       <DrawerComponent title="Sign Up" content={<SignupForm />} />

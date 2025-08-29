@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.32.0
+
+### Misc
+
+- `medusa-js` version updated to `2.9.0`.
+
 ## 0.31.0
 
 ### Features

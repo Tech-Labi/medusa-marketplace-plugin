@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.33.0
+
+### Features
+
+- add admin/merchant-stores/[id] route
+
 ## 0.32.0
 
 ### Misc

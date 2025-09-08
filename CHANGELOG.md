@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.34.0
+
+### Features
+
+- Once new store is created by user, automatically set default settings of: Stock Location, Shipping Profiles, Service Zone and Shipping Option. It helps user to immediately accepting payments without additional settings for new users
 
 ## 0.33.0
 

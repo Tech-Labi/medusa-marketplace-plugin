@@ -12,31 +12,21 @@ export const linkStockLocationToFulfillmentStep = createStep(
   async ({ locationId, fulfillmentSetId }: LinkStockLocationToFulfillmentStepInput, { container }) => {
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
-    try {
-      const linkArray = link.create({
-        [Modules.STOCK_LOCATION]: {
-          stock_location_id: locationId,
-        },
-        [Modules.FULFILLMENT]: {
-          fulfillment_set_id: fulfillmentSetId,
-        },
-      });
+    const linkArray = link.create({
+      [Modules.STOCK_LOCATION]: {
+        stock_location_id: locationId,
+      },
+      [Modules.FULFILLMENT]: {
+        fulfillment_set_id: fulfillmentSetId,
+      },
+    });
 
-      return new StepResponse(linkArray, {
-        locationId,
-        fulfillmentSetId,
-      });
-    } catch (err: any) {
-      if (err?.code === "23505" || /duplicate/i.test(err?.message)) {
-        return new StepResponse(null, { locationId: null, fulfillmentSetId: null });
-      }
-      throw err;
-    }
+    return new StepResponse(linkArray, {
+      locationId,
+      fulfillmentSetId,
+    });
   },
   async ({ locationId, fulfillmentSetId }, { container }) => {
-    if (!locationId || !fulfillmentSetId) {
-      return;
-    }
     const link: Link = container.resolve(ContainerRegistrationKeys.LINK);
 
     link.dismiss({

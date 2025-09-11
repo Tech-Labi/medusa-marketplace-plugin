@@ -43,7 +43,7 @@ export const createStoreWorkflow = createWorkflow("create-store", (input: Create
     return linkUserToStoreStep({ userId: user.id, storeId: store.id });
   });
 
-  const storeCreated = createHook("createStoreDefaultsHook", {
+  const storeCreated = createHook("storeCreated", {
     storeId: store.id,
     salesChannel,
     userId: user.id,

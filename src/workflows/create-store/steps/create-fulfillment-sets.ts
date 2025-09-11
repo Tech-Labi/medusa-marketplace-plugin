@@ -1,55 +1,35 @@
+import { CreateServiceZoneDTO } from "@medusajs/framework/types";
 import { Modules } from "@medusajs/framework/utils";
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 
+type CreateFulfillmentSetsStepInput = {
+  name: string;
+  type: string;
+  service_zones: Omit<CreateServiceZoneDTO, "fulfillment_set_id">[];
+};
+
 export const createFulfillmentSetsStep = createStep(
   "create-fulfillment-sets",
-  async (_, { container }) => {
+  async ({ name, type, service_zones }: CreateFulfillmentSetsStepInput, { container }) => {
     const fulfillmentModuleService = container.resolve(Modules.FULFILLMENT);
-    const existingFulfillmentSet = await fulfillmentModuleService.listFulfillmentSets({
-      name: "European Warehouse delivery",
-    });
+    const existingFulfillmentSet = await fulfillmentModuleService.listFulfillmentSets(
+      {
+        name: name,
+      },
+      {
+        relations: ["service_zones"],
+      }
+    );
     if (existingFulfillmentSet.length > 0) {
       return new StepResponse({ fulfillmentSet: existingFulfillmentSet[0] }, { fulfillmentSetId: null });
     }
+
     const fulfillmentSet = await fulfillmentModuleService.createFulfillmentSets({
-      name: "European Warehouse delivery",
-      type: "shipping",
-      service_zones: [
-        {
-          name: "Europe",
-          geo_zones: [
-            {
-              country_code: "gb",
-              type: "country",
-            },
-            {
-              country_code: "de",
-              type: "country",
-            },
-            {
-              country_code: "dk",
-              type: "country",
-            },
-            {
-              country_code: "se",
-              type: "country",
-            },
-            {
-              country_code: "fr",
-              type: "country",
-            },
-            {
-              country_code: "es",
-              type: "country",
-            },
-            {
-              country_code: "it",
-              type: "country",
-            },
-          ],
-        },
-      ],
+      name,
+      type,
+      service_zones,
     });
+
     return new StepResponse({ fulfillmentSet: fulfillmentSet }, { fulfillmentSetId: fulfillmentSet.id });
   },
   async (data: { fulfillmentSetId: string | null }, { container }) => {

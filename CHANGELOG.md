@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.34.0
+
+### Features
+
+- in createStoreWorkflow was added 'storeCreated' HOOK. Implementation of this hook in your project coluld help, for example, to automatically set default settings of: Stock Location, Shipping Profiles, Service Zone and Shipping Option etc.
+- implement new steps of createStoreWorkflow : linkStockLocationToFulfilmentProviderStep, linkStockLocationToFulfillmentStep, retrieveRegionsStep, CreateFulfillmentSetsStepInput
+- apiKeysCreated HOOK: when the store is not defined the hook will be skipped
 
 ## 0.33.0
 

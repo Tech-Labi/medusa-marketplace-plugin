@@ -191,12 +191,6 @@ if (CHUNK_2) {
         lines[index + i] = "";
       }
     }
-    // // hide promotions from sidebar
-    // if (line.includes('label: t2("promotions.domain"),')) {
-    //   for (let i = -2; i <= 8; i++) {
-    //     lines[index + i] = "";
-    //   }
-    // }
   });
   writeFile(lines, CHUNK_2);
 }

@@ -6,6 +6,11 @@ createCampaignsWorkflow.hooks.campaignsCreated(
   async ({ campaigns, additional_data }, { container }) => {
     const currentStore = container.resolve("currentStore") as StoreDTO;
 
+    // console.log("[campaignsCreated] hook", {
+    //   campaigns,
+    //   additional_data,
+    // });
+
     await Promise.all(
       campaigns.map(({ id }) =>
         linkCampaignToStoreWorkflow(container).run({

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.35.0
+
+### Features
+
+- Split promotions and campaigns per store
+
 ## 0.34.0
 
 ### Features

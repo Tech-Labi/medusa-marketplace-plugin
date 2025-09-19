@@ -14,7 +14,7 @@ export type LinkPromotionToStoreInput = {
 };
 
 export const linkPromotionToStoreWorkflow = createWorkflow(
-  "link-order-to-store",
+  "link-promotion-to-store",
   (input: LinkPromotionToStoreInput) => {
     const storeIdFromUser = when("check_user_id", input, (input) => {
       return !!input.userId;

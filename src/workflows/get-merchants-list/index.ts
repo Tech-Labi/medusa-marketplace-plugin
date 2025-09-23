@@ -1,4 +1,4 @@
-import { createWorkflow, transform, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
+import { createWorkflow, WorkflowResponse } from "@medusajs/framework/workflows-sdk";
 import { getMerchantsStep } from "./steps/get-merchants";
 
 export type GetMerchantsListWorkflowInput = {

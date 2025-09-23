@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.36.0
+
+### Misc
+
+- `medusa-js` version updated to `2.10.2`.
+
+### Features
+
+- Split draft orders per store
+
+### Bug fixes
+
+- Bug fixes list products
+
 ## 0.35.0
 
 ### Features

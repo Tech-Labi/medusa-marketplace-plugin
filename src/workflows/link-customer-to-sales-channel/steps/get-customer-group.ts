@@ -29,7 +29,7 @@ export const getCustomerGroupStep = createStep<string, string, void>(
       fields: ["id", "name"],
       filters: {
         name: salesChannels[0].name,
-        created_by: superAdmins[0].id,
+        created_by: superAdmins.map(({ id }) => id),
       },
     });
 

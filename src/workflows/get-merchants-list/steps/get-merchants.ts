@@ -21,17 +21,16 @@ export const getMerchantsStep = createStep(
 
     const { data: users } = await query.graph({
       entity: "user_store",
-      fields: ["id", "user.email", "store.name", "user_id"],
+      fields: ["id", "user_id", "user.email", "store.name"],
       filters: isSuperAdmin ? {} : { user_id: userId },
     });
 
     const merchants: MerchantDTO[] = users
       .filter((u) => !!u.store)
       .map((u) => ({
-        id: u.id,
+        id: u.user_id,
         store_name: u.store.name,
         user_email: u.user.email,
-        user_id: u.user_id,
         status: "active",
         can_impersonate: isSuperAdmin,
       }));

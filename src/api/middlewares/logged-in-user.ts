@@ -5,6 +5,7 @@ import type {
 } from "@medusajs/framework/http";
 import { Modules } from "@medusajs/framework/utils";
 import { IUserModuleService } from "@medusajs/framework/types";
+import { container } from "@medusajs/framework"
 
 export async function registerLoggedInUser(
   req: MedusaRequest,
@@ -17,6 +18,12 @@ export async function registerLoggedInUser(
   if (userId) {
     const user = await userModuleService.retrieveUser(userId);
     req.scope.register({
+      loggedInUser: {
+        resolve: () => user,
+      },
+    });
+    // We use it for the import [product created hook], because we pause the workflow until it is confirmed. After confirmation, we get the container from the initial Medusa — https://github.com/medusajs/medusa/blob/develop/packages/modules/workflow-engine-inmemory/src/services/workflow-orchestrator.ts#L502
+    container.register({
       loggedInUser: {
         resolve: () => user,
       },

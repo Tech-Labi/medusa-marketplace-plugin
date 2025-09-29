@@ -5,7 +5,7 @@ import { linkProductCollectionToStoreWorkflow } from "../link-product-collection
 createCollectionsWorkflow.hooks.collectionsCreated(async ({ collections }, { container }) => {
   console.log("HOOK collectionsCreated", collections);
 
-  const currentStore = container.resolve("currentStore") as StoreDTO;
+  const currentStore = container.resolve("currentStore") as Pick<StoreDTO, 'id'>;
   await Promise.all(
     collections.map(({ id }) =>
       linkProductCollectionToStoreWorkflow(container).run({

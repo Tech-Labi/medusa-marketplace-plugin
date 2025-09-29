@@ -5,7 +5,7 @@ import { linkCampaignToStoreWorkflow } from "../link-campaign-to-store";
 
 createPromotionsWorkflow.hooks.promotionsCreated(
   async ({ promotions, additional_data }, { container }) => {
-    const currentStore = container.resolve("currentStore") as StoreDTO;
+    const currentStore = container.resolve("currentStore") as Pick<StoreDTO, 'id'>;
 
     // console.log("[promotionsCreated] hook", { promotions, additional_data });
 

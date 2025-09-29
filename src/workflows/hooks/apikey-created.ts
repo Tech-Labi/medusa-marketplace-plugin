@@ -5,10 +5,10 @@ import { linkApiKeyToStoreWorkflow } from "../link-apikey-to-store";
 createApiKeysWorkflow.hooks.apiKeysCreated(async ({ apiKeys }, { container }) => {
   console.log("HOOK apiKeysCreated", apiKeys);
 
-  let currentStore: StoreDTO | undefined;
+  let currentStore: Pick<StoreDTO, 'id'> | undefined;
 
   try {
-    currentStore = container.resolve("currentStore") as StoreDTO | undefined;
+    currentStore = container.resolve("currentStore") as Pick<StoreDTO, 'id'> | undefined;
     if (!currentStore) {
       console.warn("currentStore is undefined, skipping linking workflow");
       return;

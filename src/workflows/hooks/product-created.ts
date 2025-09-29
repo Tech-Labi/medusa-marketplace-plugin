@@ -7,7 +7,7 @@ createProductsWorkflow.hooks.productsCreated(
   async ({ products }, { container }) => {
     console.log("HOOK productsCreated", products);
 
-    const currentStore = container.resolve("currentStore") as StoreDTO;
+    const currentStore = container.resolve("currentStore") as Pick<StoreDTO, 'id'>;
     await Promise.all(
       products.map(({ id }) =>
         linkProductToStoreWorkflow(container).run({

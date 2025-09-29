@@ -9,21 +9,19 @@ import {
   createPriceListsWorkflow,
   CreatePriceListsWorkflowInput as MedusaCreatePriceListsWorkflowInput,
 } from "@medusajs/medusa/core-flows";
-import { getStoreStep } from "../link-product-to-store/steps/get-store";
 import { linkPriceListsToStoreStep } from "./steps/link-price-list-to-store";
-import { UserDTO } from "@medusajs/types";
 
 export const createPriceListsForStoreWorkflowId =
   "create-price-lists-for-store-workflow";
 
 export type CreatePriceListsWorkflowInput = {
-  user: UserDTO;
+  store_id: string;
 } & MedusaCreatePriceListsWorkflowInput;
 
 export const createPriceListsForStoreWorkflow = createWorkflow(
   createPriceListsForStoreWorkflowId,
   (input: WorkflowData<CreatePriceListsWorkflowInput>) => {
-    const { price_lists_data, user } = input;
+    const { price_lists_data, store_id } = input;
 
     const priceLists = createPriceListsWorkflow.runAsStep({
       input: { price_lists_data },
@@ -33,18 +31,9 @@ export const createPriceListsForStoreWorkflow = createWorkflow(
       data.priceLists.map(({ id }) => id)
     );
 
-    const priceListStoreLinks = when(
-      "check-is-need-to-link-store-to-price-list",
-      input,
-      (input) => {
-        return !!input.user && !input.user?.metadata?.is_super_admin;
-      }
-    ).then(() => {
-      const store = getStoreStep({ userId: user.id });
-      return linkPriceListsToStoreStep({
-        price_list_ids,
-        store_id: store.id,
-      });
+    const priceListStoreLinks = linkPriceListsToStoreStep({
+      price_list_ids,
+      store_id,
     });
 
     return new WorkflowResponse({ priceLists, priceListStoreLinks });

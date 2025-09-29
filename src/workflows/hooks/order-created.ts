@@ -5,7 +5,7 @@ import { linkOrderToStoreWorkflow } from "../link-order-to-store";
 createOrderWorkflow.hooks.orderCreated(async ({ order }, { container }) => {
   console.log("HOOK orderCreated", order);
 
-  const currentStore = container.resolve("currentStore") as StoreDTO;
+  const currentStore = container.resolve("currentStore") as Pick<StoreDTO, 'id'>;
   await linkOrderToStoreWorkflow(container).run({
     input: {
       orderId: order.id,

@@ -12,14 +12,26 @@ export const getProductPriceListPricesStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
     const { prices } = input;
 
+    const { data: stores } = await query.graph({
+      entity: "store",
+      fields: ["id"],
+      filters: {
+        metadata: {
+          is_super_admin: true,
+        },
+      },
+    });
+
     const { data: allPriceLists } = await query.graph({
-      entity: "price_list",
-      fields: ["id", "title", "stores.*"],
+      entity: "price_list_store",
+      fields: ["id", "price_list.id"],
+      filters: {
+        store_id: stores.map(({ id }) => id),
+      },
     });
 
     const priceListIds: string[] = allPriceLists
-      .filter(({ stores }) => !stores?.length)
-      .map(({ id }) => id);
+      .map(({ price_list }) => price_list.id);
     const createInput = priceListIds.map((id) => ({ id, prices }));
 
     return new StepResponse(createInput);

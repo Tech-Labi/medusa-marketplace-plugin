@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.37.0
+
+### Features
+
+- Made stock locations and shipping profiles visible to supervisors
+- Removed getStoreStep; use currentStore instead
+
+### Bug fixes
+
+- Fixed bug with user impersonation
+- Fixed type bug for currentStore
+
+### Misc
+
+- Improved performance for price list functionality
+
 ## 0.36.0
 
 ### Misc

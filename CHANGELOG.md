@@ -1,11 +1,17 @@
 # Changelog
 
-## 0.38.0
+## 0.39.0
 
 ### Features
 
 - Add pagination query parametrs into /admin/merchants route
   - add search query parametr to make search by Store name or Email
+
+## 0.38.0
+
+### Bug fixes
+
+- Impersonate bar not appearing
 
 ## 0.37.0
 

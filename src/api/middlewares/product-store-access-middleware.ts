@@ -10,7 +10,7 @@ import { UserDTO } from "@medusajs/types";
  * Middleware that enforces product visibility rules based on the logged-in user.
  *
  * - Super admins: bypass all filters, see all products
- * - Other users: if the "id" filter is an empty array, replace it with `null` to ensure no products are returned (instead of all products).
+ * - Other users: if the "id" filter is an empty array, replace it with `null` only for Index Engine to ensure no products are returned (instead of all products).
  */
 export function productStoreAccessMiddleware(
   req: MedusaRequest,

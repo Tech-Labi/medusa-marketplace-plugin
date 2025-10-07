@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.38.0
+
+### Features
+
+- Add pagination query parametrs into /admin/merchants route
+  - add search query parametr to make search by Store name or Email
+
 ## 0.37.0
 
 ### Features

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.38.0
+
+### Bug fixes
+
+- Impersonate bar not appearing
+
 ## 0.37.0
 
 ### Features

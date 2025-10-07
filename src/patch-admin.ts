@@ -27,7 +27,7 @@ export const findFilesPathByNamePattern = (
   });
 };
 
-export function findChunkFileByContainingText(text: string) {
+export function findChunksFileByContainingText(text: string) {
   try {
     const dirPath = `${process.cwd()}/node_modules/@medusajs/dashboard/dist`;
 
@@ -40,6 +40,7 @@ export function findChunkFileByContainingText(text: string) {
     );
 
     // Loop over the matching files and check their content
+    const result = [];
     for (const fileName of targetFiles) {
       const filePath = `${dirPath}/${fileName}`;
       const content = fs.readFileSync(filePath, "utf8");
@@ -47,9 +48,10 @@ export function findChunkFileByContainingText(text: string) {
       // If the file contains the target string, print its name
       if (content.includes(text)) {
         console.log(`Found '${text}' in file: ${filePath}`);
-        return filePath;
+        result.push(filePath);
       }
     }
+    return result;
   } catch (error) {
     console.error("An error occurred:", error);
   }
@@ -108,7 +110,8 @@ const REST_PASSWORD_PATHS = findFilesPathByNamePattern(
 
 // 1) Welcome to Medusa -> Welcome to Marketplace
 let lines: string[];
-const CHUNK_1 = findChunkFileByContainingText("Welcome to Medusa");
+const res_1 = findChunksFileByContainingText("Welcome to Medusa");
+const CHUNK_1 = res_1[0];
 if (CHUNK_1) {
   lines = readFileAsLines(CHUNK_1);
   for (let i = 0; i < lines.length; i++) {
@@ -132,7 +135,8 @@ REST_PASSWORD_PATHS.forEach((path: string) => {
 });
 
 // 4) hide documentation and changelog links from menu
-const CHUNK_2 = findChunkFileByContainingText("app.menus.user.documentation");
+const res_2 = findChunksFileByContainingText("app.menus.user.documentation");
+const CHUNK_2 = res_2[0];
 if (CHUNK_2) {
   lines = readFileAsLines(CHUNK_2);
   lines.forEach((line: string, index: number) => {
@@ -196,18 +200,20 @@ if (CHUNK_2) {
 }
 
 // 5) add Impersonate block
-const CHUNK_3 = findChunkFileByContainingText("var MainLayout");
-if (CHUNK_3) {
-  lines = readFileAsLines(CHUNK_3);
-  lines.forEach((line: string, index: number) => {
-    if (line.includes("var MainLayout")) {
-      const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted",children:[jsx14("p",{children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
-      lines[index] = newCode;
-      lines[index + 1] = "";
-      lines[index + 2] = "";
-    }
-  });
-  writeFile(lines, CHUNK_3);
+const CHUNKS_3 = findChunksFileByContainingText("var MainLayout");
+if (CHUNKS_3?.length > 0) {
+  for (let chk of CHUNKS_3) {
+    lines = readFileAsLines(chk);
+    lines.forEach((line: string, index: number) => {
+      if (line.includes("var MainLayout")) {
+        const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted",children:[jsx14("p",{children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
+        lines[index] = newCode;
+        lines[index + 1] = "";
+        lines[index + 2] = "";
+      }
+    });
+    writeFile(lines, chk);
+  }
 }
 
 // Reset Vite cache

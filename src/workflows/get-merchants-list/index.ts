@@ -4,23 +4,20 @@ import { getMerchantsStep } from "./steps/get-merchants";
 export type GetMerchantsListWorkflowInput = {
   userId: string;
   isSuperAdmin: boolean;
-  offset?: number;
-  limit?: number;
-  searchString?: string;
+  skip?: number;
+  take?: number;
+  q?: string;
 };
 
 export const getMerchantsListWorkflow = createWorkflow(
   "get-merchants-list-workflow",
   (input: GetMerchantsListWorkflowInput) => {
-    const offset = transform({ input }, (data) => data.input.offset ?? 0);
-    const limit = transform({ input }, (data) => data.input.limit ?? 20);
-
     const merchantsResult = getMerchantsStep({
       userId: input.userId,
       isSuperAdmin: input.isSuperAdmin,
-      offset,
-      limit,
-      searchString: input?.searchString,
+      skip: input.skip,
+      take: input?.take,
+      q: input?.q,
     });
 
     return new WorkflowResponse(merchantsResult);

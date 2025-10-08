@@ -4,9 +4,9 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 export type GetMerchantsStepInput = {
   userId: string;
   isSuperAdmin: boolean;
-  offset?: number;
-  limit?: number;
-  searchString?: string;
+  skip?: number;
+  take?: number;
+  q?: string;
 };
 
 export interface MerchantDTO {
@@ -19,25 +19,25 @@ export interface MerchantDTO {
 
 export const getMerchantsStep = createStep(
   "get-merchants-step",
-  async ({ userId, isSuperAdmin, offset, limit, searchString }: GetMerchantsStepInput, { container }) => {
+  async ({ userId, isSuperAdmin, skip, take, q }: GetMerchantsStepInput, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
     const filters = {
       ...(isSuperAdmin ? {} : { user_id: userId }),
     };
-    if (searchString && searchString.length > 0) {
+    if (q && q.length > 0) {
       const { data: users } = await query.graph({
         entity: "user",
         fields: ["id", "email"],
         filters: {
-          email: { $like: `%${searchString}%` },
+          email: { $like: `%${q}%` },
         },
       });
       const { data: stores } = await query.graph({
         entity: "store",
         fields: ["id", "name"],
         filters: {
-          name: { $like: `%${searchString}%` },
+          name: { $like: `%${q}%` },
         },
       });
       Object.assign(filters, {
@@ -52,8 +52,8 @@ export const getMerchantsStep = createStep(
       fields: ["id", "user_id", "user.email", "store.name"],
       filters: filters,
       pagination: {
-        skip: offset,
-        take: limit,
+        skip: skip,
+        take: take,
       },
     });
 
@@ -65,6 +65,6 @@ export const getMerchantsStep = createStep(
       can_impersonate: isSuperAdmin,
     }));
 
-    return new StepResponse({ merchants, pagination: metadata });
+    return new StepResponse({ merchants, metadata });
   }
 );

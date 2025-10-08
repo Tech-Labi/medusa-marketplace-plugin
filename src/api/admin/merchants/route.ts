@@ -10,7 +10,7 @@ export const GET = async (req: MedusaRequest<AdminGetMerchantsParamsType>, res: 
       userId: loggedInUser.id,
       isSuperAdmin: !!loggedInUser.metadata?.is_super_admin,
       ...req.queryConfig.pagination,
-      ...req.validatedQuery,
+      ...req.filterableFields,
     },
   });
   const { merchants, metadata } = result;

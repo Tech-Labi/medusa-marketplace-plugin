@@ -12,13 +12,7 @@ export type GetMerchantsListWorkflowInput = {
 export const getMerchantsListWorkflow = createWorkflow(
   "get-merchants-list-workflow",
   (input: GetMerchantsListWorkflowInput) => {
-    const merchantsResult = getMerchantsStep({
-      userId: input.userId,
-      isSuperAdmin: input.isSuperAdmin,
-      skip: input.skip,
-      take: input?.take,
-      q: input?.q,
-    });
+    const merchantsResult = getMerchantsStep(input);
 
     return new WorkflowResponse(merchantsResult);
   }

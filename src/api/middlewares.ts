@@ -17,6 +17,7 @@ import { adminCollectionRoutesMiddlewares } from "./admin/collections/middleware
 import { addStoreScope } from "./middlewares/add-store-scope";
 import { adminPromotionsRoutesMiddlewares } from "./admin/promotions/middlewares";
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares";
+import { adminMerchantsRoutesMiddlewares } from "./admin/merchants/middlewares";
 
 export default defineMiddlewares({
   routes: [
@@ -41,5 +42,6 @@ export default defineMiddlewares({
     ...adminOrderRoutesMiddlewares,
     ...adminCollectionRoutesMiddlewares,
     ...adminDraftOrderRoutesMiddlewares,
+    ...adminMerchantsRoutesMiddlewares,
   ],
 });

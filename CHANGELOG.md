@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.39.0
+
+### Features
+
+- Add pagination query parametrs into /admin/merchants route
+  - add search query parametr to make search by Store name or Email
+
+### Bug fixes
+
+- Bug fixes list products `productStoreAccessMiddleware`
+
 ## 0.38.0
 
 ### Bug fixes

@@ -4,6 +4,9 @@ import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 export type GetMerchantsStepInput = {
   userId: string;
   isSuperAdmin: boolean;
+  skip?: number;
+  take?: number;
+  q?: string;
 };
 
 export interface MerchantDTO {
@@ -16,25 +19,52 @@ export interface MerchantDTO {
 
 export const getMerchantsStep = createStep(
   "get-merchants-step",
-  async ({ userId, isSuperAdmin }: GetMerchantsStepInput, { container }) => {
+  async ({ userId, isSuperAdmin, skip, take, q }: GetMerchantsStepInput, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
 
-    const { data: users } = await query.graph({
+    const filters = {
+      ...(isSuperAdmin ? {} : { user_id: userId }),
+    };
+    if (q && q.length > 0) {
+      const { data: users } = await query.graph({
+        entity: "user",
+        fields: ["id", "email"],
+        filters: {
+          email: { $like: `%${q}%` },
+        },
+      });
+      const { data: stores } = await query.graph({
+        entity: "store",
+        fields: ["id", "name"],
+        filters: {
+          name: { $like: `%${q}%` },
+        },
+      });
+      Object.assign(filters, {
+        $or: [{ store_id: [...stores.map((store) => store.id)] }, { user_id: [...users.map((user) => user.id)] }],
+      });
+    } else {
+      Object.assign(filters, { $or: [{ store_id: { $ne: null } }] });
+    }
+
+    const { data: users, metadata } = await query.graph({
       entity: "user_store",
       fields: ["id", "user_id", "user.email", "store.name"],
-      filters: isSuperAdmin ? {} : { user_id: userId },
+      filters: filters,
+      pagination: {
+        skip: skip,
+        take: take,
+      },
     });
 
-    const merchants: MerchantDTO[] = users
-      .filter((u) => !!u.store)
-      .map((u) => ({
-        id: u.user_id,
-        store_name: u.store.name,
-        user_email: u.user.email,
-        status: "active",
-        can_impersonate: isSuperAdmin,
-      }));
+    const merchants: MerchantDTO[] = users.map((u) => ({
+      id: u.user_id,
+      store_name: u.store.name,
+      user_email: u.user.email,
+      status: "active",
+      can_impersonate: isSuperAdmin,
+    }));
 
-    return new StepResponse(merchants);
+    return new StepResponse({ merchants, metadata });
   }
 );

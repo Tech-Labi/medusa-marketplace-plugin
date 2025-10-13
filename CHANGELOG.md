@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.40.0
+
+### Bug fixes
+
+- Bug fixes list merchants make search query case-insensitive
+
 ## 0.39.0
 
 ### Features

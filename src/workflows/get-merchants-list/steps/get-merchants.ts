@@ -30,14 +30,14 @@ export const getMerchantsStep = createStep(
         entity: "user",
         fields: ["id", "email"],
         filters: {
-          email: { $like: `%${q}%` },
+          email: { $ilike: `%${q}%` },
         },
       });
       const { data: stores } = await query.graph({
         entity: "store",
         fields: ["id", "name"],
         filters: {
-          name: { $like: `%${q}%` },
+          name: { $ilike: `%${q}%` },
         },
       });
       Object.assign(filters, {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.41.0
+
+### Bug fixes
+
+- Bug fixes Super admin is not allowed to create multiple stores
+
 ## 0.40.0
 
 ### Bug fixes

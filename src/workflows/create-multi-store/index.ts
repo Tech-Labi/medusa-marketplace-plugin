@@ -3,6 +3,7 @@ import { createStoresWorkflow } from "@medusajs/medusa/core-flows";
 import { getSalesChannelStep } from "../create-store/steps/get-sales-channel";
 import { linkUserToStoreStep } from "../create-store/steps/link-user-to-store";
 import { checkUnickStoreNameStep } from "./steps/checkUnickStoreName";
+import { checkSuperAdminStep } from "./steps/checkSuperAdmin";
 
 export type CreateMultiStoreInput = {
   store_name: string;
@@ -10,6 +11,7 @@ export type CreateMultiStoreInput = {
 };
 
 export const createMultiStoreWorkflow = createWorkflow("create-multi-store", (input: CreateMultiStoreInput) => {
+  checkSuperAdminStep(input);
   checkUnickStoreNameStep(input);
 
   const salesChannel = getSalesChannelStep();

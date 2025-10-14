@@ -14,6 +14,7 @@ export type CreateStoreInput = {
 };
 
 export const createStoreWorkflow = createWorkflow("create-store", (input: CreateStoreInput) => {
+  const { user, registerResponse } = createUserStep(input);
   const salesChannel = getSalesChannelStep();
 
   const storesData = transform({ input, salesChannel }, (data) => [
@@ -32,8 +33,6 @@ export const createStoreWorkflow = createWorkflow("create-store", (input: Create
   });
 
   const store = stores[0];
-
-  const { user, registerResponse } = createUserStep(input);
 
   // super admins users do not have a link to store
   // so they will see all products and orders

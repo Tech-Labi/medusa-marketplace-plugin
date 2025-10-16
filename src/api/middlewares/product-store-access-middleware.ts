@@ -3,7 +3,7 @@ import {
   MedusaResponse,
   MedusaNextFunction,
 } from "@medusajs/framework";
-import { FeatureFlag, isPresent } from "@medusajs/framework/utils";
+import { isPresent } from "@medusajs/framework/utils";
 import { UserDTO } from "@medusajs/types";
 
 /**
@@ -25,7 +25,7 @@ export function productStoreAccessMiddleware(
     return next();
   }
 
-  if (!FeatureFlag.isFeatureEnabled("index_engine")) {
+  if (!process.env.MEDUSA_FF_INDEX_ENGINE) {
     return next();
   }
 

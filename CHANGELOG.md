@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.42.0
+
+### Bug fixes
+
+- Bug fixes list products `productStoreAccessMiddleware`
+
 ## 0.41.0
 
 ### Bug fixes

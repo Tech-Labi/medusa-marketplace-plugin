@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.43.0
+
+### Bug fixes
+
+- Bug fixes create-multi-store Cannot read properties of null (reading 'is_super_admin')
+
 ## 0.42.0
 
 ### Bug fixes

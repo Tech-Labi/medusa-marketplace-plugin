@@ -5,6 +5,7 @@
 ### Bug fixes
 
 - Bug fixes create-multi-store Cannot read properties of null (reading 'is_super_admin')
+- Bug fixes list products `productStoreAccessMiddleware`
 
 ## 0.42.0
 

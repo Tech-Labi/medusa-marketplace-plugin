@@ -10,7 +10,8 @@ export const checkSuperAdminStep = createStep(
     const users = await userService.listUsers({
       id: [user_id],
     });
-    if (users[0].metadata["is_super_admin"] === true) {
+    const user = users[0];
+    if (user?.metadata?.is_super_admin === true) {
       throw new MedusaError(MedusaError.Types.NOT_ALLOWED, "Super Admin could not create multiple stores");
     }
   }

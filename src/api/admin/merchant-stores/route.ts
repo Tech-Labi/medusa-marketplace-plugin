@@ -1,7 +1,8 @@
 import { MedusaRequest, MedusaResponse } from "@medusajs/framework";
 import { ContainerRegistrationKeys, MedusaError, MedusaErrorTypes } from "@medusajs/framework/utils";
 import { UserDTO } from "@medusajs/types";
-import { CreateMultiStoreInput, createMultiStoreWorkflow } from "../../../workflows/create-multi-store";
+import { CreateMultiStoreInput } from "../../../workflows/create-multi-store";
+import { createStoreWorkflow } from "../../../workflows/create-store";
 
 export async function GET(req: MedusaRequest<{ userId: string }>, res: MedusaResponse): Promise<void> {
   try {
@@ -35,7 +36,7 @@ export async function POST(req: MedusaRequest<CreateMultiStoreInput>, res: Medus
   try {
     const {
       result: { store },
-    } = await createMultiStoreWorkflow(req.scope).run({
+    } = await createStoreWorkflow(req.scope).run({
       input: {
         user_id: userId || req.body.user_id,
         store_name: req.body.store_name,

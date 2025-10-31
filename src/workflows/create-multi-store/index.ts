@@ -2,8 +2,8 @@ import { createWorkflow, transform, when, WorkflowResponse } from "@medusajs/fra
 import { createStoresWorkflow } from "@medusajs/medusa/core-flows";
 import { getSalesChannelStep } from "../create-store/steps/get-sales-channel";
 import { linkUserToStoreStep } from "../create-store/steps/link-user-to-store";
-import { checkUnickStoreNameStep } from "./steps/checkUnickStoreName";
-import { checkSuperAdminStep } from "./steps/checkSuperAdmin";
+import { checkUnickStoreNameStep } from "../create-store/steps/checkUnickStoreName";
+import { checkSuperAdminStep } from "../create-store/steps/checkSuperAdmin";
 
 export type CreateMultiStoreInput = {
   store_name: string;

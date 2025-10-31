@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.44.0
+
+### Bug fixes
+
+- Fixed bug in store creation, combined create-multi-store and create-store workflows.
+
 ## 0.43.0
 
 ### Bug fixes

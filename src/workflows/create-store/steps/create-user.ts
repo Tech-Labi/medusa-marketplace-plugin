@@ -9,7 +9,7 @@ import {
 
 export const createUserStep = createStep(
   "create-user-step",
-  async (input: CreateStoreInput, { container }) => {
+  async (input: Required<Omit<CreateStoreInput, "user_id" | "store_name" | "metadata">>, { container }) => {
     const userService: IUserModuleService = container.resolve(Modules.USER);
     const authService: IAuthModuleService = container.resolve(Modules.AUTH);
 

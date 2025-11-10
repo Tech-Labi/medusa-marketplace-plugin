@@ -8,6 +8,10 @@ type CreateFulfillmentSetsStepInput = {
   service_zones: Omit<CreateServiceZoneDTO, "fulfillment_set_id">[];
 };
 
+export type CreateFulfillmentSetsCompensationInput = {
+  fulfillmentSetId?: string;
+};
+
 export const createFulfillmentSetsStep = createStep(
   "create-fulfillment-sets",
   async ({ name, type, service_zones }: CreateFulfillmentSetsStepInput, { container }) => {
@@ -21,11 +25,11 @@ export const createFulfillmentSetsStep = createStep(
 
     return new StepResponse({ fulfillmentSet: fulfillmentSet }, { fulfillmentSetId: fulfillmentSet.id });
   },
-  async (data: { fulfillmentSetId: string | null }, { container }) => {
+  async (input: CreateFulfillmentSetsCompensationInput, { container }) => {
     const fulfillmentModuleService = container.resolve(Modules.FULFILLMENT);
 
-    if (data?.fulfillmentSetId) {
-      await fulfillmentModuleService.deleteFulfillmentSets([data.fulfillmentSetId]);
+    if (input?.fulfillmentSetId) {
+      await fulfillmentModuleService.deleteFulfillmentSets([input.fulfillmentSetId]);
     }
   }
 );

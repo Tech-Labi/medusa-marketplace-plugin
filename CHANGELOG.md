@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.46.0
+
+### Misc
+
+- `medusa-js` version updated to `2.11.1`.
+
+### Bug fixes
+
+- Fixed compensation flow
+
 ## 0.45.0
 
 ### Misc

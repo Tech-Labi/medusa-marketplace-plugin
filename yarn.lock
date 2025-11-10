@@ -1313,7 +1313,7 @@
     tailwindcss "^3.3.6"
     vite "^5.4.14"
 
-"@medusajs/admin-sdk@^2.11.0", "@medusajs/admin-sdk@2.11.2":
+"@medusajs/admin-sdk@^2.11.1", "@medusajs/admin-sdk@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/admin-sdk/-/admin-sdk-2.11.2.tgz"
   integrity sha512-azrD5IyKPrQWImlzeyG5Pxp9hb8CG+65exlsM8OG/Cf2y+yQRtLfbG9MqFtFGzmoP93KVYDcC2jJx4YhJUUzOA==
@@ -1419,7 +1419,7 @@
   resolved "https://registry.npmjs.org/@medusajs/cart/-/cart-2.11.2.tgz"
   integrity sha512-sYw9L/5dm8dU+U6JXwlEfcOdeIe/9TuFLpcgdDXfboD80BXD3tZpuAqdg6tBSHXxAtMh6UP2X9ktk4/o3HuexA==
 
-"@medusajs/cli@^2.11.0", "@medusajs/cli@2.11.2":
+"@medusajs/cli@^2.11.1", "@medusajs/cli@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/cli/-/cli-2.11.2.tgz"
   integrity sha512-Wp3O3NsSJsUDHiwxdyr+aD1d1MvghJu43OSBpnxHOLmRkj3nnmEUuTY3d4sqTM4e1JX4RxVaJQRgqEJsSHtK/Q==
@@ -1577,7 +1577,7 @@
   resolved "https://registry.npmjs.org/@medusajs/file/-/file-2.11.2.tgz"
   integrity sha512-8MAjvD55zdpcegtfFco4cjh6FdKw1cJsfnp6Aj+Oe7MKh22JL1NR99VRkXwG1IBWOfC6yrWf+XDROePtIUE3Uw==
 
-"@medusajs/framework@^2.11.0", "@medusajs/framework@2.11.2":
+"@medusajs/framework@^2.11.1", "@medusajs/framework@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/framework/-/framework-2.11.2.tgz"
   integrity sha512-WrsEH3h7TrKytawy7Uo0zkapaHkkTu90ASOb8BAIfzTwqmT7Y779VvyDAt+Z26zqz8i0nObNgFFJcCIwepHPkg==
@@ -1618,7 +1618,7 @@
   resolved "https://registry.npmjs.org/@medusajs/fulfillment/-/fulfillment-2.11.2.tgz"
   integrity sha512-kZZfpsgxCxO30r3SdnlBZlvxft9rWrAzDaE5G1+KhPqnSEHmDgph1UiqVfCMzrengTmnHhx6QGJeXQIuafsnEg==
 
-"@medusajs/icons@^2.11.0", "@medusajs/icons@2.11.2":
+"@medusajs/icons@^2.11.1", "@medusajs/icons@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/icons/-/icons-2.11.2.tgz"
   integrity sha512-czNfFyxNrZa7uKrWh6WIAz04ZEG6baTVdxM9YZ9HI5saofjizJwbVa4Tswc7Zn0LZBZDLvFxRCLQKNw6vqzGhg==
@@ -1633,7 +1633,7 @@
   resolved "https://registry.npmjs.org/@medusajs/inventory/-/inventory-2.11.2.tgz"
   integrity sha512-CU/8uHZpPBx+xwt7ARF4pMvVtsG8YDnM78zv6uA407AyZR5Mj+EKTGfShIWzoHRSryg4Hu+gMZ+HkBu06xQrIA==
 
-"@medusajs/js-sdk@^2.11.0", "@medusajs/js-sdk@2.11.2":
+"@medusajs/js-sdk@^2.11.1", "@medusajs/js-sdk@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/js-sdk/-/js-sdk-2.11.2.tgz"
   integrity sha512-UqmIV7w/nYTpRfMlaaDvNv8Flej75XDEtkXKlqJR5rUnQgUpk7Kto0wIxNuhZ3eBlRojHeNQ9G4nZiiuRt+8JQ==
@@ -1663,7 +1663,7 @@
   resolved "https://registry.npmjs.org/@medusajs/locking/-/locking-2.11.2.tgz"
   integrity sha512-Rjm49nN8O+1pLIrt1jj4ELEFKedE3b5z1LZ21JzWgkRQN3v+m2Ef+9Q8YJ5vBkxq2a8H+vW1dsiIK+S80Y8E9A==
 
-"@medusajs/medusa@^2.11.0", "@medusajs/medusa@2.11.2":
+"@medusajs/medusa@^2.11.1", "@medusajs/medusa@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/medusa/-/medusa-2.11.2.tgz"
   integrity sha512-6xQUdBd9IRLZbqConEAO/yD3PpNLobJz9Ft9awoZmoGkXkNaQJJBsyRlAQAdjJ7TxlNXxa0suWjjc5R7GsLD4A==
@@ -1852,7 +1852,7 @@
     remove-trailing-slash "^0.1.1"
     uuid "^8.3.2"
 
-"@medusajs/test-utils@^2.11.0", "@medusajs/test-utils@2.11.2":
+"@medusajs/test-utils@^2.11.1", "@medusajs/test-utils@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/test-utils/-/test-utils-2.11.2.tgz"
   integrity sha512-fGC3n4UVWvkbX+zzx7T3i0n2Mni1z0FzW5aMfjVDDixo0NuDvCW9eAqMOi4z1npKrkCqmBz8MjWJ7FuLPqWIcg==
@@ -1863,7 +1863,7 @@
     get-port "^5.1.0"
     randomatic "^3.1.1"
 
-"@medusajs/types@^2.11.0", "@medusajs/types@2.11.2":
+"@medusajs/types@^2.11.1", "@medusajs/types@2.11.2":
   version "2.11.2"
   resolved "https://registry.npmjs.org/@medusajs/types/-/types-2.11.2.tgz"
   integrity sha512-c9wrW8Abyia263MFvZAsZOc+ew5YoJm61QzA6BAbiicbWAg+A4NeOsLWmAwiEbP46kly/B6Fzi/AMuBLNRtK4A==

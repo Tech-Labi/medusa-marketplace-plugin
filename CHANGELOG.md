@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.47.0
+
+### Features
+
+- Update admin/merchants route. Now it call entity: "store" instead of "user_store".
+  - processing of store search params moved to middleware
+
 ## 0.46.0
 
 ### Misc

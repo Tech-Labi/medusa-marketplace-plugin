@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.48.0
+
+### Bug fixes
+
+- block user w/o store to access data
+
 ## 0.47.0
 
 ### Features

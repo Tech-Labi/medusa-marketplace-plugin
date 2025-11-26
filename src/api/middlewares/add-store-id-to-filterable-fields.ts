@@ -20,7 +20,6 @@ export async function addStoreIdToFilterableFields(
   const loggedInUser = req.scope.resolve("loggedInUser", {
     allowUnregistered: true,
   }) as UserDTO;
-  console.log("[addStoreIdToFilterableFields] loggedInUser", loggedInUser);
   if (!loggedInUser) {
     // TODO: allow to call this via API (not only admin)
     res.status(403).json({

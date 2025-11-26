@@ -58,7 +58,11 @@ export async function addStoreIdToFilterableFields(
     }
   } else {
     // user w/o stores - should not have access
-    req.filterableFields["store_id"] = "__no_access__";
+     if (req.url.includes("/admin/stores") && req.method === "GET") {
+       req.filterableFields["id"] = "__no_access__";
+     } else {
+       req.filterableFields["store_id"] = "__no_access__";
+     }
   }
 
   return next();

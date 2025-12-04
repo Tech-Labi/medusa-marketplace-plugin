@@ -32,10 +32,6 @@ export async function addStoreScope(req: MedusaRequest, res: MedusaResponse, nex
     req.scope.register({
       currentStore: asValue({ id }),
     });
-    // We use it for the import [product created hook], because we pause the workflow until it is confirmed. After confirmation, we get the container from the initial Medusa — https://github.com/medusajs/medusa/blob/develop/packages/modules/workflow-engine-inmemory/src/services/workflow-orchestrator.ts#L502
-    container.register({
-      currentStore: asValue({ id }),
-    });
   } else if (loggedInUser.metadata?.is_super_admin) {
     const { data: stores } = await query.graph({
       entity: "store",
@@ -49,10 +45,6 @@ export async function addStoreScope(req: MedusaRequest, res: MedusaResponse, nex
       },
     });
     req.scope.register({
-      currentStore: asValue({ id: stores[0].id }),
-    });
-    // We use it for the import [product created hook], because we pause the workflow until it is confirmed. After confirmation, we get the container from the initial Medusa — https://github.com/medusajs/medusa/blob/develop/packages/modules/workflow-engine-inmemory/src/services/workflow-orchestrator.ts#L502
-    container.register({
       currentStore: asValue({ id: stores[0].id }),
     });
   }

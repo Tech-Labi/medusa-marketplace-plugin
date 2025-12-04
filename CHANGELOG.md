@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.49.0
+
+### Bug fixes
+
+- removed `container.register` usage
+
 ## 0.48.0
 
 ### Bug fixes

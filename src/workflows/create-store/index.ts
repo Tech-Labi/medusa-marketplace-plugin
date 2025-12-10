@@ -7,6 +7,7 @@ import {
 } from "@medusajs/framework/workflows-sdk";
 import {
   createStoresWorkflow,
+  emitEventStep,
   useRemoteQueryStep,
 } from "@medusajs/medusa/core-flows";
 
@@ -23,6 +24,11 @@ export type CreateStoreInput = {
   user_id?: string;
   is_super_admin?: boolean;
   metadata?: Record<string, any>;
+};
+
+export const MerchantWorkflowEvents = {
+  CREATED: "merchant.created",
+  ACTIVATED: "merchant.activated",
 };
 
 export const createStoreWorkflow = createWorkflow(
@@ -88,10 +94,22 @@ export const createStoreWorkflow = createWorkflow(
 
     // super admins users do not have a link to store
     // so they will see all products and orders
-    const userStoreLinkArray = when(input, (input) => {
-      return !input.is_super_admin;
-    }).then(() => {
+    const userStoreLinkArray = when(
+      { input, createdUser },
+      ({ input, createdUser }) => {
+        return !input.is_super_admin;
+      }
+    ).then(() => {
       return linkUserToStoreStep({ userId: user.id, storeId: store.id });
+    });
+
+    when("is-merchant-created", input, (input) => {
+      return !input.user_id && !input.is_super_admin;
+    }).then(() => {
+      emitEventStep({
+        eventName: MerchantWorkflowEvents.CREATED,
+        data: createdUser,
+      });
     });
 
     const storeCreated = createHook("storeCreated", {

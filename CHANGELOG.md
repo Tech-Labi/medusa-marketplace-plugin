@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.50.0
+
+### Features
+
+- added merchant workflow events
+
 ## 0.49.0
 
 ### Bug fixes

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.51.0
+
+### Features
+
+- added extraction of userId from the API key in the `registerLoggedInUser` middleware when `ALLOW_API_KEYS_FOR_VENDORS` is true
+
 ## 0.50.0
 
 ### Features

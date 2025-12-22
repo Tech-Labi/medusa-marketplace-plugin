@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.52.0
+
+### Bug fixes
+
+- fixed the error message that occurred during store creation
+
 ## 0.51.0
 
 ### Features

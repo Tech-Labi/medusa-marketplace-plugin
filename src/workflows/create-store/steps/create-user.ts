@@ -59,9 +59,9 @@ export const createUserStep = createStep(
       // } as AuthenticationInput);
 
       return new StepResponse({ user, registerResponse }, compensationInput);
-    } catch (e) {
+    } catch (error) {
       return StepResponse.permanentFailure(
-        `Couldn't create the user: ${e}`,
+        error,
         compensationInput
       );
     }

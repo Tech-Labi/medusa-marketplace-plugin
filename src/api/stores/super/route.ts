@@ -12,14 +12,23 @@ export async function POST(
   req: MedusaRequest<CreateStoreInput>,
   res: MedusaResponse
 ): Promise<void> {
-  const { result } = await createStoreWorkflow(req.scope).run({
-    input: {
-      ...req.body,
-      is_super_admin: true,
-      store_name: SUPER_ADMIN_STORE_NAME,
-    },
-  });
-  res.json({
-    message: "Ok",
-  });
+  try {
+    const { result } = await createStoreWorkflow(req.scope).run({
+      input: {
+        ...req.body,
+        is_super_admin: true,
+        store_name: SUPER_ADMIN_STORE_NAME,
+      },
+    });
+    res.json({
+      message: "Ok",
+    });
+  } catch (error) {
+    console.error("/stores/super error", error);
+
+    res.status(422).json({
+      message: error.message || "Error creating super store",
+      error: error.message || error,
+    });
+  }
 }

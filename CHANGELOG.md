@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.53.0
+
+### Misc
+
+- updated `src/links/order-store.ts` to M-1
+- updated medusa to 2.13.1
+
 ## 0.52.0
 
 ### Bug fixes

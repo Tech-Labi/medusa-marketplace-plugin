@@ -3,22 +3,20 @@ import type {
   MedusaNextFunction,
   MedusaResponse,
 } from "@medusajs/framework/http";
-import { Modules } from "@medusajs/framework/utils";
+import { container } from "@medusajs/framework";
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 import {
   IApiKeyModuleService,
-  IUserModuleService,
+  IStoreModuleService,
 } from "@medusajs/framework/types";
-import { container } from "@medusajs/framework";
 
-export async function registerLoggedInUser(
+export async function registerCurrentStore(
   req: AuthenticatedMedusaRequest,
   res: MedusaResponse,
   next: MedusaNextFunction,
 ) {
-  const allowApiKeysForVendors =
-    process.env.ALLOW_API_KEYS_FOR_VENDORS !== "false";
-
-  let userId;
+  let apiKeyId;
+  let storeId;
 
   // API request with Publishable API key
   const publishableApiKey = req.headers["x-publishable-api-key"];
@@ -29,6 +27,7 @@ export async function registerLoggedInUser(
     const apiKeys = await apiKeyService.listApiKeys({
       token: publishableApiKey,
     });
+
     if (apiKeys.length === 0) {
       res.status(403).json({
         type: "invalid_request_error",
@@ -36,20 +35,22 @@ export async function registerLoggedInUser(
       });
       return;
     }
-    const apiKey = apiKeys[0];
-    userId = apiKey.created_by;
+    apiKeyId = apiKeys[0].id;
 
     // Dashboard request
   } else if (
     req.session?.impersonate_user_id ||
     req.session?.auth_context?.actor_id
   ) {
-    userId =
-      req.session?.impersonate_user_id || req.session?.auth_context?.actor_id;
-
+    storeId = req.cookies["store_id"];
+    if (!storeId) {
+      // do nothing, can't get a store anyhow
+      //
+      next();
+      return;
+    }
     // API request with Secret API key
   } else if (
-    allowApiKeysForVendors &&
     req.auth_context?.actor_type === "api-key" &&
     req.auth_context?.actor_id
   ) {
@@ -59,12 +60,7 @@ export async function registerLoggedInUser(
     //     auth_identity_id: '',
     //     app_metadata: {}
     //   }
-    const apiKeyId = req.auth_context?.actor_id;
-    const apiKeyService = container.resolve<IApiKeyModuleService>(
-      Modules.API_KEY,
-    );
-    const apiKey = await apiKeyService.retrieveApiKey(apiKeyId);
-    userId = apiKey.created_by;
+    apiKeyId = req.auth_context?.actor_id;
   } else {
     res.status(403).json({
       type: "invalid_request_error",
@@ -73,12 +69,26 @@ export async function registerLoggedInUser(
     return;
   }
 
-  const userModuleService: IUserModuleService = req.scope.resolve(Modules.USER);
-  const user = await userModuleService.retrieveUser(userId);
+  // get store by api key
+  let store;
+  if (apiKeyId) {
+    const query = container.resolve(ContainerRegistrationKeys.QUERY);
+    const { data: apiKeys } = await query.graph({
+      entity: "api_key",
+      fields: ["id", "store.*"],
+      filters: {
+        id: [apiKeyId],
+      },
+    });
+    store = apiKeys[0].store;
+  } else {
+    const storeService = container.resolve<IStoreModuleService>(Modules.STORE);
+    store = await storeService.retrieveStore(storeId);
+  }
 
   req.scope.register({
-    loggedInUser: {
-      resolve: () => user,
+    currentStore: {
+      resolve: () => store,
     },
   });
 

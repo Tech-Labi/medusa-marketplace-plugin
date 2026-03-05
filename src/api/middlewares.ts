@@ -14,7 +14,7 @@ import { adminProductsRoutesMiddlewares } from "./admin/products/middlewares";
 import { adminUsersRoutesMiddlewares } from "./admin/users/middlewares";
 import { storesRoutesMiddlewares } from "./stores/middlewares";
 import { adminCollectionRoutesMiddlewares } from "./admin/collections/middlewares";
-import { addStoreScope } from "./middlewares/add-store-scope";
+import { registerCurrentStore } from "./middlewares/register-current-store";
 import { adminPromotionsRoutesMiddlewares } from "./admin/promotions/middlewares";
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares";
 import { adminMerchantsRoutesMiddlewares } from "./admin/merchants/middlewares";
@@ -24,7 +24,7 @@ export default defineMiddlewares({
     {
       method: ["GET", "POST"],
       matcher: "/admin/*",
-      middlewares: [registerLoggedInUser, addStoreScope],
+      middlewares: [registerLoggedInUser, registerCurrentStore],
     },
     ...storesRoutesMiddlewares,
     ...adminProductsRoutesMiddlewares,

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.54.0
+
+### Features
+
+- update `registerLoggedInUser` middleware
+- replaced `addStoreScope` with more powerful `registerCurrentStore` middleware
+- treating the absence of `ALLOW_API_KEYS_FOR_VENDORS` env as allowed
+
 ## 0.53.0
 
 ### Misc

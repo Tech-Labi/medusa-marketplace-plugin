@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.56.0
+
+### Bug fixes
+
+- let `registerCurrentStore` to respect multi-store feature
+
 ## 0.55.0
 
 ### Features

@@ -8,7 +8,9 @@ import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils";
 import {
   IApiKeyModuleService,
   IStoreModuleService,
+  UserDTO,
 } from "@medusajs/framework/types";
+import * as cookie from "cookie";
 
 export async function registerCurrentStore(
   req: AuthenticatedMedusaRequest,
@@ -17,6 +19,13 @@ export async function registerCurrentStore(
 ) {
   let apiKeyId;
   let storeId;
+
+  const loggedInUser = req.scope.resolve("loggedInUser", {
+    allowUnregistered: true,
+  }) as UserDTO;
+  if (!loggedInUser) {
+    return next();
+  }
 
   // API request with Publishable API key
   const publishableApiKey = req.headers["x-publishable-api-key"];
@@ -42,12 +51,24 @@ export async function registerCurrentStore(
     req.session?.impersonate_user_id ||
     req.session?.auth_context?.actor_id
   ) {
-    storeId = req.cookies["store_id"];
-    if (!storeId) {
-      // do nothing, can't get a store anyhow
-      //
-      next();
-      return;
+    // request from Admin panel
+    //
+    // check if active store selected (Multi-Store feature)
+    const cookies = req.headers.cookie ? cookie.parse(req.headers.cookie) : {};
+    const cookieStoreId = cookies?.store_id;
+    if (!cookieStoreId) {
+      // then let's just grab 1st store of user
+      const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+      const { data: stores } = await query.graph({
+        entity: "user_store",
+        fields: ["id", "store_id"],
+        filters: {
+          user_id: [loggedInUser.id],
+        },
+      });
+      storeId = stores[0].store_id;
+    } else {
+      storeId = cookieStoreId;
     }
     // API request with Secret API key
   } else if (

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.54.1
+
+### Misc
+
+- re-publish
+
 ## 0.54.0
 
 ### Features

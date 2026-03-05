@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.55.0
+
+### Features
+
+- update `addStoreIdToFilterableFields` to respect `currentStore`
+
+### Bug fixes
+
+- fix TS compilation error in `AdminGetMerchantsParamsType`
+
+## 0.54.1
+
+### Misc
+
+- re-publish
+
 ## 0.54.0
 
 ### Features

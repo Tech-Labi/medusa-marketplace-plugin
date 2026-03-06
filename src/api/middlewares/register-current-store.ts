@@ -66,7 +66,12 @@ export async function registerCurrentStore(
           user_id: [loggedInUser.id],
         },
       });
-      storeId = stores[0].store_id;
+      storeId = stores[0]?.store_id;
+      if (!storeId) {
+        // TODO: if use both dashboard and iso platform
+        next();
+        return;
+      }
     } else {
       storeId = cookieStoreId;
     }

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.57.0
+
+### Bug fixes
+
+- let `registerCurrentStore` and `registerLoggedInUser` to allow app users
+
 ## 0.56.0
 
 ### Bug fixes

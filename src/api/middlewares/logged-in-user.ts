@@ -65,11 +65,24 @@ export async function registerLoggedInUser(
     );
     const apiKey = await apiKeyService.retrieveApiKey(apiKeyId);
     userId = apiKey.created_by;
+
+    // login via js sdk
+  } else if (
+    req.auth_context?.actor_type === "user" &&
+    req.auth_context?.actor_id
+  ) {
+    userId = req.auth_context?.actor_id;
   } else {
-    res.status(403).json({
-      type: "invalid_request_error",
-      message: "Forbidden",
-    });
+    // We want to return FORBIDDEN here
+    // but there is a case where login via js SDK.
+    // The request to /admin/users/me does not have a session yet, so we need to allow it.
+    //
+    // res.status(403).json({
+    //     type: "invalid_request_error",
+    //     message: "Forbidden",
+    // });
+    //
+    next();
     return;
   }
 

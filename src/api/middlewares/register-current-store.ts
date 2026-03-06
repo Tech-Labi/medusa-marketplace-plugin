@@ -82,6 +82,14 @@ export async function registerCurrentStore(
     //     app_metadata: {}
     //   }
     apiKeyId = req.auth_context?.actor_id;
+    // request via js sdk
+  } else if (
+    req.auth_context?.actor_type === "user" &&
+    req.auth_context?.actor_id
+  ) {
+    // a user does not have any stores, so do nothing here
+    next();
+    return;
   } else {
     res.status(403).json({
       type: "invalid_request_error",

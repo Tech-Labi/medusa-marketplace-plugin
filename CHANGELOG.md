@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.58.0
+
+- fix edge case in `registerCurrentStore`
+
+### Bug fixes
+
 ## 0.57.0
 
 ### Bug fixes

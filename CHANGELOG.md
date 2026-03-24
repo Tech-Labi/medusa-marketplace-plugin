@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.59.0
+
+- navigate a user to Merchants list  page when remove Impersonation
+
 ## 0.58.0
 
 - fix edge case in `registerCurrentStore`

@@ -15,8 +15,9 @@ import { StoreDTO, UserDTO } from "@medusajs/framework/types"
  * and the second insert would fail on the unique constraint.
  *
  * Strategy:
- *   1. Resolve the current store — from container if available, otherwise
- *      fall back to querying the user→store link.
+ *   1. Resolve the vendor's store via the user→store link. Falls back
+ *      to the container's `currentStore` for API-key auth where there
+ *      is no `loggedInUser`.
  *   2. Build a candidate handle: `{store-slug}-{product-slug}`.
  *   3. If that candidate already exists (same vendor, duplicate title),
  *      append an incrementing numeric suffix (`-2`, `-3`, …).
@@ -41,15 +42,15 @@ export async function dedupProductHandle(
       return next()
     }
 
-    // Try currentStore from registerCurrentStore middleware first
-    let store = req.scope.resolve("currentStore", {
-      allowUnregistered: true,
-    }) as StoreDTO | undefined
+    // Resolve the vendor's store via the user→store link
+    let store = await resolveStoreFromUser(req)
 
-    // Fallback: resolve store from user→store link (covers Bearer token auth
-    // where registerCurrentStore skips store resolution)
+    // Fallback to currentStore from the container (for API-key auth
+    // where there is no loggedInUser)
     if (!store?.name) {
-      store = await resolveStoreFromUser(req)
+      store = req.scope.resolve("currentStore", {
+        allowUnregistered: true,
+      }) as StoreDTO | undefined
     }
 
     if (!store?.name) {

@@ -3,7 +3,7 @@ import type {
   MedusaNextFunction,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { ContainerRegistrationKeys, Modules, toHandle } from "@medusajs/framework/utils"
 import { StoreDTO, UserDTO } from "@medusajs/framework/types"
 
 /**
@@ -58,10 +58,10 @@ export async function dedupProductHandle(
     }
 
     // Build candidate handle: {store-slug}-{product-slug}
-    const storeSlug = toSlug(store.name)
+    const storeSlug = toHandle(store.name)
     const productSlug = body.handle
-      ? toSlug(body.handle as string)
-      : toSlug(body.title as string)
+      ? toHandle(body.handle as string)
+      : toHandle(body.title as string)
 
     let candidate = `${storeSlug}-${productSlug}`
 
@@ -87,20 +87,6 @@ export async function dedupProductHandle(
   }
 
   return next()
-}
-
-/**
- * Convert a string to a URL-safe slug.
- * Mirrors Medusa's internal toHandle() behaviour.
- */
-function toSlug(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") // strip accents
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-") // non-alphanum → hyphen
-    .replace(/^-+|-+$/g, "") // trim leading/trailing hyphens
 }
 
 /**

@@ -42,15 +42,16 @@ export async function dedupProductHandle(
       return next()
     }
 
-    // Resolve the vendor's store via the user→store link
-    let store = await resolveStoreFromUser(req)
+    // Use currentStore if already resolved by registerCurrentStore middleware
+    // (avoids a redundant DB query for dashboard/session auth)
+    let store = req.scope.resolve("currentStore", {
+      allowUnregistered: true,
+    }) as StoreDTO | undefined
 
-    // Fallback to currentStore from the container (for API-key auth
-    // where there is no loggedInUser)
+    // Fallback: query user→store link (needed for Bearer token auth
+    // where registerCurrentStore skips store resolution)
     if (!store?.name) {
-      store = req.scope.resolve("currentStore", {
-        allowUnregistered: true,
-      }) as StoreDTO | undefined
+      store = await resolveStoreFromUser(req)
     }
 
     if (!store?.name) {

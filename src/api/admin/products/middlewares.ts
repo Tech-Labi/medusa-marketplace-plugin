@@ -2,6 +2,7 @@ import { maybeApplyLinkFilter, MiddlewareRoute } from "@medusajs/framework";
 import { moveIdsToQueryFromFilterableFields } from "../../middlewares/move-ids-to-query-from-filterable-fields";
 import { addStoreIdToFilterableFields } from "../../middlewares/add-store-id-to-filterable-fields";
 import { productStoreAccessMiddleware } from "../../middlewares/product-store-access-middleware";
+import { dedupProductHandle } from "../../middlewares/dedup-product-handle";
 
 export const adminProductsRoutesMiddlewares: MiddlewareRoute[] = [
   {
@@ -17,5 +18,10 @@ export const adminProductsRoutesMiddlewares: MiddlewareRoute[] = [
       productStoreAccessMiddleware,
       moveIdsToQueryFromFilterableFields,
     ],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/products",
+    middlewares: [dedupProductHandle],
   },
 ];

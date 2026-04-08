@@ -68,9 +68,14 @@ export async function dedupProductHandle(
     // Ensure uniqueness — append suffix if the handle already exists
     const productModule = req.scope.resolve(Modules.PRODUCT) as any
 
+    const MAX_ATTEMPTS = 100
     let suffix = 1
     while (await handleExists(productModule, candidate)) {
       suffix++
+      if (suffix > MAX_ATTEMPTS) {
+        // Let Medusa's default handling take over
+        return next()
+      }
       candidate = `${storeSlug}-${productSlug}-${suffix}`
     }
 

@@ -3,8 +3,8 @@ import type {
   MedusaNextFunction,
   MedusaResponse,
 } from "@medusajs/framework/http"
-import { Modules } from "@medusajs/framework/utils"
-import { StoreDTO } from "@medusajs/framework/types"
+import { ContainerRegistrationKeys, Modules } from "@medusajs/framework/utils"
+import { StoreDTO, UserDTO } from "@medusajs/framework/types"
 
 /**
  * Middleware that prevents product handle collisions in a multi-vendor
@@ -15,7 +15,8 @@ import { StoreDTO } from "@medusajs/framework/types"
  * and the second insert would fail on the unique constraint.
  *
  * Strategy:
- *   1. Resolve the current store (already registered by registerCurrentStore).
+ *   1. Resolve the current store — from container if available, otherwise
+ *      fall back to querying the user→store link.
  *   2. Build a candidate handle: `{store-slug}-{product-slug}`.
  *   3. If that candidate already exists (same vendor, duplicate title),
  *      append an incrementing numeric suffix (`-2`, `-3`, …).
@@ -30,22 +31,33 @@ export async function dedupProductHandle(
   next: MedusaNextFunction,
 ) {
   try {
+    // Only act on product creation requests
+    if (!req.path.endsWith("/admin/products")) {
+      return next()
+    }
+
     const body = req.body as Record<string, unknown> | undefined
     if (!body?.title) {
       return next()
     }
 
-    // currentStore is registered by registerCurrentStore middleware
-    const currentStore = req.scope.resolve("currentStore", {
+    // Try currentStore from registerCurrentStore middleware first
+    let store = req.scope.resolve("currentStore", {
       allowUnregistered: true,
     }) as StoreDTO | undefined
 
-    if (!currentStore?.name) {
+    // Fallback: resolve store from user→store link (covers Bearer token auth
+    // where registerCurrentStore skips store resolution)
+    if (!store?.name) {
+      store = await resolveStoreFromUser(req)
+    }
+
+    if (!store?.name) {
       return next()
     }
 
     // Build candidate handle: {store-slug}-{product-slug}
-    const storeSlug = toSlug(currentStore.name)
+    const storeSlug = toSlug(store.name)
     const productSlug = body.handle
       ? toSlug(body.handle as string)
       : toSlug(body.title as string)
@@ -98,4 +110,29 @@ async function handleExists(
     { take: 1, select: ["id"] },
   )
   return products.length > 0
+}
+
+/**
+ * Resolve the vendor's store by querying the user→store link.
+ * Covers the case where registerCurrentStore doesn't register a store
+ * (e.g. Bearer token auth with actor_type "user").
+ */
+async function resolveStoreFromUser(
+  req: AuthenticatedMedusaRequest,
+): Promise<StoreDTO | undefined> {
+  const loggedInUser = req.scope.resolve("loggedInUser", {
+    allowUnregistered: true,
+  }) as UserDTO | undefined
+
+  if (!loggedInUser?.id) return undefined
+
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY) as any
+
+  const { data: userStoreLinks } = await query.graph({
+    entity: "user_store",
+    fields: ["store.*"],
+    filters: { user_id: loggedInUser.id },
+  })
+
+  return userStoreLinks?.[0]?.store as StoreDTO | undefined
 }

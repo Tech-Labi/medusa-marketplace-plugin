@@ -21,7 +21,7 @@ export const adminProductsRoutesMiddlewares: MiddlewareRoute[] = [
   },
   {
     method: ["POST"],
-    matcher: "/admin/products",
+    matcher: "/admin/*",
     middlewares: [dedupProductHandle],
   },
 ];

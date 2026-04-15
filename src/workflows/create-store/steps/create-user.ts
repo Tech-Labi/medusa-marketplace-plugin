@@ -7,28 +7,32 @@ import {
   AuthenticationInput,
 } from "@medusajs/framework/types";
 
+type CreateUserInput = {
+  email: string;
+  password: string;
+  is_super_admin?: boolean;
+  metadata?: Record<string, any>;
+};
+
 export type CreateUserStepCompensationInput = {
   userId?: string;
   authIdentityId?: string;
+  metadata?: Record<string, any>;
 };
 
 export const createUserStep = createStep(
   "create-user-step",
-  async (
-    input: Required<
-      Omit<CreateStoreInput, "user_id" | "store_name" | "metadata">
-    >,
-    { container }
-  ) => {
+  async (input: CreateUserInput, { container }) => {
     const userService: IUserModuleService = container.resolve(Modules.USER);
     const authService: IAuthModuleService = container.resolve(Modules.AUTH);
     const compensationInput: CreateUserStepCompensationInput = {};
 
     try {
+      const metadata = input.metadata || {};
       // 1. create user
       const user = await userService.createUsers({
         ...input,
-        metadata: input.is_super_admin ? { is_super_admin: true } : undefined,
+        metadata: input.is_super_admin ? { ...metadata, is_super_admin: true } : metadata,
       });
       compensationInput.userId = user.id;
 
@@ -60,10 +64,7 @@ export const createUserStep = createStep(
 
       return new StepResponse({ user, registerResponse }, compensationInput);
     } catch (error) {
-      return StepResponse.permanentFailure(
-        error,
-        compensationInput
-      );
+      return StepResponse.permanentFailure(error, compensationInput);
     }
   },
   async (input: CreateUserStepCompensationInput, { container }) => {
@@ -76,5 +77,5 @@ export const createUserStep = createStep(
     if (input?.authIdentityId) {
       await authService.deleteAuthIdentities([input.authIdentityId]);
     }
-  }
+  },
 );

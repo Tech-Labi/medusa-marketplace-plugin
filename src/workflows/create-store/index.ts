@@ -24,6 +24,7 @@ export type CreateStoreInput = {
   user_id?: string;
   is_super_admin?: boolean;
   metadata?: Record<string, any>;
+  user_metadata?: Record<string, any>;
 };
 
 export const MerchantWorkflowEvents = {
@@ -63,6 +64,7 @@ export const createStoreWorkflow = createWorkflow(
         email: input.email,
         password: input.password,
         is_super_admin: input.is_super_admin,
+        metadata: input.user_metadata,
       });
     });
 

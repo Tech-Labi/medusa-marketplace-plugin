@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.60.0
+
+- allow `user_metadata` in `createStoreWorkflow`
+
+# Changelog
+
 ## 0.59.0
 
 - navigate a user to Merchants list  page when remove Impersonation

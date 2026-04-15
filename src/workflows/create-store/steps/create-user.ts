@@ -17,7 +17,6 @@ type CreateUserInput = {
 export type CreateUserStepCompensationInput = {
   userId?: string;
   authIdentityId?: string;
-  metadata?: Record<string, any>;
 };
 
 export const createUserStep = createStep(

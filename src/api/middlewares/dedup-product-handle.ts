@@ -74,7 +74,10 @@ export async function dedupProductHandle(
     while (await handleExists(productModule, candidate)) {
       suffix++
       if (suffix > MAX_ATTEMPTS) {
-        // Let Medusa's default handling take over
+        // Observability: learn how often we hit the cap in production.
+        console.warn(
+          `[dedup-product-handle] Reached ${MAX_ATTEMPTS}-attempt cap for "${storeSlug}-${productSlug}"; falling back to Medusa default handling.`,
+        )
         return next()
       }
       candidate = `${storeSlug}-${productSlug}-${suffix}`

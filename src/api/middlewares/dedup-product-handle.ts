@@ -83,6 +83,13 @@ export async function dedupProductHandle(
       candidate = `${storeSlug}-${productSlug}-${suffix}`
     }
 
+    if (suffix > 1) {
+      // Observability: learn how many iterations dedup typically takes in production.
+      console.info(
+        `[dedup-product-handle] Resolved "${candidate}" after ${suffix - 1} attempt(s).`,
+      )
+    }
+
     body.handle = candidate
   } catch (error) {
     // If anything goes wrong (e.g. super-admin without a store),

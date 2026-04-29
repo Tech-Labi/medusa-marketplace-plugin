@@ -1,9 +1,9 @@
 import { MedusaRequest, MedusaResponse, refetchEntities } from "@medusajs/framework/http";
-import { UserDTO } from "@medusajs/framework/types";
+import type { LoggedInUser } from "../../middlewares/logged-in-user";
 import { AdminGetMerchantsParamsType } from "./validators";
 
 export const GET = async (req: MedusaRequest<AdminGetMerchantsParamsType>, res: MedusaResponse) => {
-  const loggedInUser = req.scope.resolve("loggedInUser") as UserDTO;
+  const loggedInUser = req.scope.resolve("loggedInUser") as LoggedInUser;
 
   const response = await refetchEntities({
     entity: "store",
@@ -23,7 +23,7 @@ export const GET = async (req: MedusaRequest<AdminGetMerchantsParamsType>, res: 
     store_name: merchant.name,
     user_email: merchant?.users[0]?.email,
     status: "active",
-    can_impersonate: !!loggedInUser.metadata?.is_super_admin,
+    can_impersonate: !!loggedInUser.super_admin?.id,
   }));
 
   res.json({

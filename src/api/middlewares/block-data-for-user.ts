@@ -3,7 +3,7 @@ import {
   type MedusaRequest,
   type MedusaResponse,
 } from "@medusajs/framework/http";
-import { UserDTO } from "@medusajs/framework/types";
+import type { LoggedInUser } from "./logged-in-user";
 
 export enum UserType {
   ADMIN,
@@ -30,13 +30,13 @@ export const blockDataForUser = (
 
     const loggedInUser = req.scope.resolve("loggedInUser", {
       allowUnregistered: true,
-    }) as UserDTO;
+    }) as LoggedInUser | undefined;
     if (!loggedInUser) {
       return next();
     }
 
     const isSuperAdmin =
-      loggedInUser.metadata?.is_super_admin && !req.session.impersonate_user_id;
+      !!loggedInUser.super_admin?.id && !req.session.impersonate_user_id;
     const isBlocked =
       (isSuperAdmin && userType === UserType.ADMIN) ||
       (!isSuperAdmin && userType === UserType.VENDOR);

@@ -2,19 +2,22 @@ import { defineRouteConfig } from "@medusajs/admin-sdk"
 import { Spinner } from "@medusajs/icons"
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom"
-import { useMe } from "../../hooks/api/users";
+import { useIsSuperAdmin } from "../../hooks/api/use-is-super-admin";
 
 const SalesChannels = () => {
   const navigate = useNavigate()
-  const { user, isLoading } = useMe()
+  const { isSuperAdmin, isLoading } = useIsSuperAdmin()
 
   useEffect(() => {
-    if (user?.metadata?.is_super_admin && !isLoading) {
+    if (isLoading) {
+      return;
+    }
+    if (isSuperAdmin) {
       navigate("/settings/sales-channels");
     } else {
       navigate("/404");
     }
-  }, [user, navigate]);
+  }, [isSuperAdmin, isLoading, navigate]);
 
   if (isLoading) {
     return (

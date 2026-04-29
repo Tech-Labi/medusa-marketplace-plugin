@@ -63,7 +63,6 @@ export const createStoreWorkflow = createWorkflow(
       return createUserStep({
         email: input.email,
         password: input.password,
-        is_super_admin: input.is_super_admin,
         metadata: input.user_metadata,
       });
     });
@@ -80,9 +79,7 @@ export const createStoreWorkflow = createWorkflow(
         name: data.input.store_name,
         supported_currencies: [{ currency_code: "usd", is_default: true }],
         default_sales_channel_id: data.salesChannel.id,
-        metadata: data.input.is_super_admin
-          ? { ...data.input.metadata, is_super_admin: true }
-          : data.input.metadata,
+        metadata: data.input.metadata,
       },
     ]);
 

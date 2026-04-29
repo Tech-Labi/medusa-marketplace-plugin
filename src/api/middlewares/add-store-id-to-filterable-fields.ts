@@ -3,7 +3,8 @@ import {
   type MedusaRequest,
   type MedusaResponse,
 } from "@medusajs/framework/http";
-import { UserDTO, StoreDTO } from "@medusajs/framework/types";
+import { StoreDTO } from "@medusajs/framework/types";
+import type { LoggedInUser } from "./logged-in-user";
 import { SUPER_ADMIN_STORE_NAME } from "../../constants";
 
 export async function addStoreIdToFilterableFields(
@@ -13,7 +14,7 @@ export async function addStoreIdToFilterableFields(
 ) {
   const loggedInUser = req.scope.resolve("loggedInUser", {
     allowUnregistered: true,
-  }) as UserDTO;
+  }) as LoggedInUser | undefined;
   if (!loggedInUser) {
     res.status(403).json({
       type: "invalid_request_error",
@@ -27,7 +28,7 @@ export async function addStoreIdToFilterableFields(
   }
 
   // super admin?
-  if (loggedInUser.metadata?.is_super_admin) {
+  if (loggedInUser.super_admin?.id) {
     if (req.url.includes("/admin/stores") && req.method === "GET") {
       req.filterableFields["name"] = SUPER_ADMIN_STORE_NAME;
     }

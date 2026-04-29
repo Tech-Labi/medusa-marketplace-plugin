@@ -4,6 +4,7 @@ import {
   CreateStoreInput,
   createStoreWorkflow,
 } from "../../../workflows/create-store";
+import { createSuperAdminWorkflow } from "../../../workflows/create-super-admin";
 import { SUPER_ADMIN_STORE_NAME } from "../../../constants";
 
 // curl -X POST http://localhost:9000/stores/super -d '{ "email":"admin@test.com", "password": "123"}' -H 'Content-Type: application/json' -H 'Authorization: 123'
@@ -20,6 +21,13 @@ export async function POST(
         store_name: SUPER_ADMIN_STORE_NAME,
       },
     });
+
+    await createSuperAdminWorkflow(req.scope).run({
+      input: {
+        user_id: result.user.id,
+      },
+    });
+
     res.json({
       message: "Ok",
     });

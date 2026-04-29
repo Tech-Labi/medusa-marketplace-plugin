@@ -6,15 +6,13 @@ export const getCustomerGroupStep = createStep<string, string, void>(
   async (sales_channel_id: string, { container }) => {
     const query = container.resolve(ContainerRegistrationKeys.REMOTE_QUERY);
 
-    const { data: superAdmins } = await query.graph({
-      entity: "user",
-      fields: ["id"],
-      filters: {
-        metadata: {
-          is_super_admin: true,
-        },
-      },
+    const { data: superAdminLinks } = await query.graph({
+      entity: "super_admin",
+      fields: ["user.id"],
     });
+    const superAdmins = superAdminLinks
+      .map((link) => link.user)
+      .filter((u) => !!u?.id);
 
     const { data: salesChannels } = await query.graph({
       entity: "sales_channel",

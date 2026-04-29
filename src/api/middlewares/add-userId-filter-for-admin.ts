@@ -1,5 +1,5 @@
 import { type MedusaNextFunction, type MedusaRequest, type MedusaResponse } from "@medusajs/framework/http";
-import { UserDTO } from "@medusajs/framework/types";
+import type { LoggedInUser } from "./logged-in-user";
 import { addUserIdToFilterableFields } from "./add-userId-filter";
 
 export async function addUserIdToFilterableFieldsForAdmin(
@@ -9,12 +9,12 @@ export async function addUserIdToFilterableFieldsForAdmin(
 ) {
   const loggedInUser = req.scope.resolve("loggedInUser", {
     allowUnregistered: true,
-  }) as UserDTO;
+  }) as LoggedInUser | undefined;
   if (!loggedInUser) {
     return next();
   }
 
-  const isSuperAdmin = loggedInUser.metadata?.is_super_admin && !req.session.impersonate_user_id;
+  const isSuperAdmin = !!loggedInUser.super_admin?.id && !req.session.impersonate_user_id;
 
   if (isSuperAdmin) {
     return next();

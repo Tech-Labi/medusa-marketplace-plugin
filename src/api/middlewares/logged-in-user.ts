@@ -3,12 +3,24 @@ import type {
   MedusaNextFunction,
   MedusaResponse,
 } from "@medusajs/framework/http";
-import { Modules } from "@medusajs/framework/utils";
+import {
+  ContainerRegistrationKeys,
+  Modules,
+} from "@medusajs/framework/utils";
 import {
   IApiKeyModuleService,
-  IUserModuleService,
+  UserDTO,
 } from "@medusajs/framework/types";
 import { container } from "@medusajs/framework";
+import { AdminUser } from "@medusajs/types";
+
+export type LoggedInUser = UserDTO & {
+  super_admin?: { id: string } | null;
+};
+
+export type AdminUserWithSuperAdmin = AdminUser & {
+  super_admin?: { id: string } | null;
+};
 
 export async function registerLoggedInUser(
   req: AuthenticatedMedusaRequest,
@@ -86,12 +98,23 @@ export async function registerLoggedInUser(
     return;
   }
 
-  const userModuleService: IUserModuleService = req.scope.resolve(Modules.USER);
-  const user = await userModuleService.retrieveUser(userId);
+  const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+  const {
+    data: [user],
+  } = await query.graph({
+    entity: "user",
+    fields: ["*", "super_admin.id"],
+    filters: { id: userId },
+  });
+
+  if (!user) {
+    next();
+    return;
+  }
 
   req.scope.register({
     loggedInUser: {
-      resolve: () => user,
+      resolve: () => user as LoggedInUser,
     },
   });
 

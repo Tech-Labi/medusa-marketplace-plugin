@@ -4,7 +4,7 @@ import {
   MedusaNextFunction,
 } from "@medusajs/framework";
 import { isPresent } from "@medusajs/framework/utils";
-import { UserDTO } from "@medusajs/types";
+import { LoggedInUser } from "./logged-in-user";
 
 /**
  * Middleware that enforces product visibility rules based on the logged-in user.
@@ -19,9 +19,9 @@ export function productStoreAccessMiddleware(
 ) {
   const loggedInUser = req.scope.resolve("loggedInUser", {
     allowUnregistered: true,
-  }) as UserDTO;
+  }) as LoggedInUser | undefined;
 
-  if (loggedInUser?.metadata?.is_super_admin) {
+  if (loggedInUser?.super_admin?.id) {
     return next();
   }
 

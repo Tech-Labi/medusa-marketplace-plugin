@@ -8,8 +8,7 @@ import type { LoggedInUser } from "./logged-in-user";
 /**
  * Augments the GET /admin/users/me response with `user.super_admin = { id }`
  * (or `null`) so the admin frontend can detect super admin status synchronously
- * from the same payload it already fetches via `useMe()`, without a second
- * round-trip to /admin/super-admin/me.
+ * from the same payload it already fetches via `useMe()`
  *
  * The data is read from the `loggedInUser` container which is already enriched
  * with `super_admin.id` by `registerLoggedInUser`, so no extra DB query is

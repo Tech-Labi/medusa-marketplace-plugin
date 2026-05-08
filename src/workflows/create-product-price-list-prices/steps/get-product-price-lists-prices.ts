@@ -1,6 +1,7 @@
 import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
 import { CreatePriceListPriceWorkflowDTO } from "@medusajs/types";
+import { SUPER_ADMIN_STORE_NAME } from "../../../constants";
 
 export type GetProductPriceListPricesInput = {
   prices: CreatePriceListPriceWorkflowDTO[];
@@ -12,13 +13,11 @@ export const getProductPriceListPricesStep = createStep(
     const query = container.resolve(ContainerRegistrationKeys.QUERY);
     const { prices } = input;
 
-    const { data: stores } = await query.graph({
+    const { data: superAdminStores } = await query.graph({
       entity: "store",
       fields: ["id"],
       filters: {
-        metadata: {
-          is_super_admin: true,
-        },
+        name: SUPER_ADMIN_STORE_NAME,
       },
     });
 
@@ -26,7 +25,7 @@ export const getProductPriceListPricesStep = createStep(
       entity: "price_list_store",
       fields: ["id", "price_list.id"],
       filters: {
-        store_id: stores.map(({ id }) => id),
+        store_id: superAdminStores.map(({ id }) => id),
       },
     });
 

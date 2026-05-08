@@ -1,5 +1,4 @@
 import { createStep, StepResponse } from "@medusajs/framework/workflows-sdk";
-import { CreateStoreInput } from "..";
 import { Modules } from "@medusajs/framework/utils";
 import {
   IUserModuleService,
@@ -10,7 +9,6 @@ import {
 type CreateUserInput = {
   email: string;
   password: string;
-  is_super_admin?: boolean;
   metadata?: Record<string, any>;
 };
 
@@ -31,7 +29,7 @@ export const createUserStep = createStep(
       // 1. create user
       const user = await userService.createUsers({
         ...input,
-        metadata: input.is_super_admin ? { ...metadata, is_super_admin: true } : metadata,
+        metadata,
       });
       compensationInput.userId = user.id;
 

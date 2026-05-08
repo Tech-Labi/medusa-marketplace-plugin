@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.61.0
+
+### Security
+
+- reworked Super Admin detection to use a dedicated `super_admin` model and links instead of editable `user.metadata.is_super_admin`
+- updated Super Admin access checks to rely on `loggedInUser.super_admin?.id`
+- added `enrichUserMeWithSuperAdmin` so admin UI can resolve Super Admin status from `/admin/users/me` synchronously
+
 ## 0.60.0
 
 - allow `user_metadata` in `createStoreWorkflow`

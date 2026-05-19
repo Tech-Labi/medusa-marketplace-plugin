@@ -12,5 +12,5 @@ export const AdminGetMerchantsParams = (
   createFindParams({
     limit: 50,
     offset: 0,
-  }) as any
-).merge(AdminGetMerchantsParamsFields);
+  }) as z.ZodObject
+).extend(AdminGetMerchantsParamsFields.shape);

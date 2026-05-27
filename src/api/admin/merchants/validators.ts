@@ -13,4 +13,4 @@ export const AdminGetMerchantsParams = (
     limit: 50,
     offset: 0,
   }) as any
-).merge(AdminGetMerchantsParamsFields);
+).extend(AdminGetMerchantsParamsFields.shape);

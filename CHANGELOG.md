@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.62.0
+
+### Misc
+
+- updated Medusa packages to `2.15.2`
+
+### Bug fixes
+
+- registered admin merchants route middlewares in the plugin middleware manifest
+- migrated `AdminGetMerchantsParams` schema composition to be compatible with Zod v4
+
 ## 0.61.0
 
 ### Security

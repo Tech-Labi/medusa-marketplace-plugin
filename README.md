@@ -98,14 +98,7 @@ The plugin was created as a result of a four-part series articles on Medium re h
 ## Envs
 
 - `ALLOW_API_KEYS_FOR_VENDORS=true` - allow API keys management for regular vendors
-- `__VITE_DISABLE_SIGNUP_WIDGET__` - to disable signup widget on login page. Must be configured in `medusa-config.ts`:
-   ```
-    admin: {
-      vite: config => {
-        config.define["__VITE_DISABLE_SIGNUP_WIDGET__"] = JSON.stringify(true);
-      },
-    },
-   ```
+- `__VITE_DISABLE_SIGNUP_WIDGET__` - to disable signup widget on login page. Must be configured via vite config `config.define["__VITE_DISABLE_SIGNUP_WIDGET__"] = JSON.stringify(true);`
 
 ## Demo app
 

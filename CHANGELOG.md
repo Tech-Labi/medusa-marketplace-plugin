@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.63.0
+
+### Bug fixes
+
+- run `registerLoggedInUser` and `registerCurrentStore` on `DELETE /admin/*` requests (previously only `GET`/`POST`), so the current store and logged-in user are resolved for admin delete routes
+
 ## 0.62.0
 
 ### Misc

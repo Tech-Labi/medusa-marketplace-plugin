@@ -22,7 +22,7 @@ import { adminMerchantsRoutesMiddlewares } from "./admin/merchants/middlewares";
 export default defineMiddlewares({
   routes: [
     {
-      method: ["GET", "POST"],
+      method: ["GET", "POST", "DELETE"],
       matcher: "/admin/*",
       middlewares: [registerLoggedInUser, registerCurrentStore],
     },

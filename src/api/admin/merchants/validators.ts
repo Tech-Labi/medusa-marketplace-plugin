@@ -5,12 +5,11 @@ export const AdminGetMerchantsParamsFields = z.object({
   q: z.string().optional(),
 });
 
-export type AdminGetMerchantsParamsType = z.infer<
-  typeof AdminGetMerchantsParams
->;
+export type AdminGetMerchantsParamsType = z.infer<typeof AdminGetMerchantsParams>;
+
 export const AdminGetMerchantsParams = (
   createFindParams({
     limit: 50,
     offset: 0,
-  }) as z.ZodObject
+  }) as z.AnyZodObject
 ).extend(AdminGetMerchantsParamsFields.shape);

@@ -1,6 +1,6 @@
 {
   "name": "@techlabi/medusa-marketplace-plugin",
-  "version": "0.64.0",
+  "version": "0.64.0-beta",
   "description": "A multi-vendor Medusa plugin",
   "author": "TechLabi",
   "license": "Apache 2.0",

@@ -22,7 +22,7 @@ export const POST = async (req: AuthenticatedMedusaRequest<ChangeStoreReqBody>, 
     });
 
     if (stores.length > 0) {
-      res.setHeader("Set-Cookie", `store_id=${store_id}; Path=/; HttpOnly; SameSite=Lax`);
+      res.append("Set-Cookie", `store_id=${store_id}; Path=/; HttpOnly; SameSite=Lax`);
       res.status(200).json({ message: "Store switched", store_id });
     } else {
       return res.status(403).json({ message: "Access denied to store" });

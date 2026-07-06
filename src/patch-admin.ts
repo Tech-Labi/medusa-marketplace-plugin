@@ -2,20 +2,14 @@ const fs = require("fs");
 
 ////////////////////////////// utils /////////////////////////////
 
-export const findFilesPathByNamePattern = (
-  filePattern: string,
-  fileExtension: string
-) => {
+export const findFilesPathByNamePattern = (filePattern: string, fileExtension: string) => {
   const dirPath = `${process.cwd()}/node_modules/@medusajs/dashboard/dist`;
 
   // Read the list of files in the directory
   const files = fs.readdirSync(dirPath);
 
   // Find the first file that matches the pattern
-  const fileNames = files.filter(
-    (file: string) =>
-      file.startsWith(filePattern) && file.endsWith(fileExtension)
-  );
+  const fileNames = files.filter((file: string) => file.startsWith(filePattern) && file.endsWith(fileExtension));
 
   if (fileNames.length === 0) {
     throw new Error(`No file found matching pattern: ${filePattern}`);
@@ -35,9 +29,7 @@ export function findChunksFileByContainingText(text: string) {
     const files = fs.readdirSync(dirPath);
 
     // Filter out files that match the pattern chunk-*.mjs
-    const targetFiles = files.filter(
-      (file: string) => file.startsWith("chunk-") && file.endsWith(".mjs")
-    );
+    const targetFiles = files.filter((file: string) => file.startsWith("chunk-") && file.endsWith(".mjs"));
 
     // Loop over the matching files and check their content
     const result = [];
@@ -67,11 +59,7 @@ export const readFileAsLines = (filePath: string) => {
   return lines;
 };
 
-export const removeOccurrence = (
-  lines: string[],
-  value: string,
-  skipFirst = true
-) => {
+export const removeOccurrence = (lines: string[], value: string, skipFirst = true) => {
   const updatedLines = lines.reduce(
     (acc, line) => {
       if (line.includes(value)) {
@@ -86,7 +74,7 @@ export const removeOccurrence = (
       }
       return acc;
     },
-    { result: [], foundFirst: !skipFirst }
+    { result: [], foundFirst: !skipFirst },
   ).result;
 
   return updatedLines;
@@ -103,10 +91,7 @@ export const writeFile = (lines: string[], filePath: string) => {
 const VITE_CACHE_PATH = `${process.cwd()}/node_modules/@medusajs/admin-bundler/node_modules/.vite`;
 const VITE_CACHE_PATH_MEDUSA_2_7_1 = `${process.cwd()}/node_modules/.vite`;
 const LOGIN_PATHS = findFilesPathByNamePattern("login-", ".mjs");
-const REST_PASSWORD_PATHS = findFilesPathByNamePattern(
-  "reset-password-",
-  ".mjs"
-);
+const REST_PASSWORD_PATHS = findFilesPathByNamePattern("reset-password-", ".mjs");
 
 // 1) Welcome to Medusa -> Welcome to Marketplace
 let lines: string[];
@@ -206,7 +191,7 @@ if (CHUNKS_3?.length > 0) {
     lines = readFileAsLines(chk);
     lines.forEach((line: string, index: number) => {
       if (line.includes("var MainLayout")) {
-        const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app/merchants"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted",children:[jsx14("p",{children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
+        const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app/merchants"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between items-center bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted text-xs md:text-sm",children:[jsx14("p",{className:"max-w-[156px] md:max-w-full truncate max-h-[1.2em]",children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
         lines[index] = newCode;
         lines[index + 1] = "";
         lines[index + 2] = "";

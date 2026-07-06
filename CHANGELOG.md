@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.64.0
+
+### Bug fixes
+
+- style for impersonation bar for mobile view
+- fix loss of store context when change store from impersonated merchant
+
 ## 0.63.0
 
 ### Bug fixes

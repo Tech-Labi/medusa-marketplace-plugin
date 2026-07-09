@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.65.0
+
+### Bug fixes
+
+- clear `store_id` cookie when ending impersonation (`DELETE /admin/impersonate`), so the super admin does not keep the impersonated merchant's store context
+
 ## 0.64.0
 
 ### Bug fixes

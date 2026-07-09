@@ -35,5 +35,6 @@ export const GET = async (req: MedusaRequest, res: MedusaResponse) => {
 
 export const DELETE = async (req: MedusaRequest, res: MedusaResponse) => {
   delete req.session.impersonate_user_id;
+  res.append("Set-Cookie", "store_id=; Path=/; HttpOnly; SameSite=Lax; Max-Age=0");
   res.status(200).send();
 };

@@ -1,6 +1,6 @@
 {
   "name": "@techlabi/medusa-marketplace-plugin",
-  "version": "0.65.0",
+  "version": "0.66.0",
   "description": "A multi-vendor Medusa plugin",
   "author": "TechLabi",
   "license": "Apache 2.0",
@@ -36,12 +36,12 @@
     "prepublishOnly": "medusa plugin:build"
   },
   "devDependencies": {
-    "@medusajs/admin-sdk": "^2.15.2",
-    "@medusajs/cli": "^2.15.2",
-    "@medusajs/framework": "^2.15.2",
-    "@medusajs/medusa": "^2.15.2",
-    "@medusajs/test-utils": "^2.15.2",
-    "@medusajs/ui": "^4.1.9",
+    "@medusajs/admin-sdk": "^2.21.2",
+    "@medusajs/cli": "^2.21.2",
+    "@medusajs/framework": "^2.21.2",
+    "@medusajs/medusa": "^2.21.2",
+    "@medusajs/test-utils": "^2.21.2",
+    "@medusajs/ui": "^4.2.6",
     "@swc/core": "^1.7.28",
     "@types/node": "^20.0.0",
     "@types/react": "^18.3.2",
@@ -51,31 +51,31 @@
     "react-dom": "^18.2.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2",
-    "vite": "^5.2.11",
+    "vite": "^7.3.6",
     "yalc": "^1.0.0-pre.53"
   },
   "peerDependencies": {
-    "@medusajs/admin-sdk": "^2.15.2",
-    "@medusajs/cli": "^2.15.2",
-    "@medusajs/framework": "^2.15.2",
-    "@medusajs/medusa": "^2.15.2",
-    "@medusajs/test-utils": "^2.15.2"
+    "@medusajs/admin-sdk": "^2.21.2",
+    "@medusajs/cli": "^2.21.2",
+    "@medusajs/framework": "^2.21.2",
+    "@medusajs/medusa": "^2.21.2",
+    "@medusajs/test-utils": "^2.21.2"
   },
   "engines": {
-    "node": ">=20"
+    "node": "^20.19.0 || >=22.12.0"
   },
   "dependencies": {
-    "@medusajs/icons": "2.13.6",
-    "@medusajs/js-sdk": "^2.15.2",
-    "@medusajs/types": "^2.15.2"
+    "@medusajs/icons": "2.21.2",
+    "@medusajs/js-sdk": "^2.21.2",
+    "@medusajs/types": "^2.21.2"
   },
   "overrides": {
-    "@medusajs/icons": "2.13.6"
+    "@medusajs/icons": "2.21.2"
   },
   "resolutions": {
-    "@medusajs/icons": "2.13.6"
+    "@medusajs/icons": "2.21.2"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.39.0"
+    "@rollup/rollup-linux-x64-gnu": "4.63.5"
   }
 }

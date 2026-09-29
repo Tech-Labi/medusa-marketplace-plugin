@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.66.0
+
+### Misc
+
+- updated Medusa packages to `2.21.2` (`@medusajs/ui` `4.2.6`, `@medusajs/icons` `2.21.2`, `vite` `7`)
+- Node.js `^20.19.0 || >=22.12.0` is required (Medusa 2.19+)
+
+### Features
+
+- impersonation indicator and "Remove Impersonation" action are now an admin widget in the `topbar` injection zone (`marketplace:impersonation-indicator`) instead of a `MainLayout` chunk patch in `patch-admin`
+
+### Security
+
+- `GET /admin/impersonate` is restricted to super admins (checked against the authenticated actor, not the impersonated user); previously any admin user could impersonate any user
+- `/admin/orders/:id` and `/admin/orders/:id/*` return 404 for orders that are not linked to the current store (super admins are not restricted)
+- restricted to super admins the core admin routes added in Medusa 2.17 - 2.21 that are not store scoped: `GET /admin/search`, `/admin/search-indexes*`, `POST /admin/users/:id/reset-password`, `GET /admin/users/:id/auth-providers`, `POST /admin/inventory-items/export`, and `POST /admin/layouts/:zone/configuration` with `is_default: true`
+
+### Breaking changes
+
+- `patch-admin` no longer patches `MainLayout`; the impersonation bar comes from the widget above
+
 ## 0.65.0
 
 ### Bug fixes

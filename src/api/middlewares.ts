@@ -18,6 +18,7 @@ import { registerCurrentStore } from "./middlewares/register-current-store";
 import { adminPromotionsRoutesMiddlewares } from "./admin/promotions/middlewares";
 import { adminDraftOrderRoutesMiddlewares } from "./admin/draft-orders/middlewares";
 import { adminMerchantsRoutesMiddlewares } from "./admin/merchants/middlewares";
+import { adminImpersonateRoutesMiddlewares } from "./admin/impersonate/middlewares";
 
 export default defineMiddlewares({
   routes: [
@@ -43,5 +44,6 @@ export default defineMiddlewares({
     ...adminCollectionRoutesMiddlewares,
     ...adminDraftOrderRoutesMiddlewares,
     ...adminMerchantsRoutesMiddlewares,
+    ...adminImpersonateRoutesMiddlewares,
   ],
 });

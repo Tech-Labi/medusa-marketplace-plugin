@@ -1,15 +1,53 @@
-import { MiddlewareRoute } from "@medusajs/framework/http";
-import { onlyForSuperAdmins } from "../../middlewares/only-for-super-admin";
+import type {
+  MedusaNextFunction,
+  MedusaRequest,
+  MedusaResponse,
+  MiddlewareRoute,
+} from "@medusajs/framework/http";
+import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/utils";
+
+// loggedInUser is already the impersonated user, so check the session actor
+async function onlyAuthenticatedSuperAdmin(
+  req: MedusaRequest,
+  _res: MedusaResponse,
+  next: MedusaNextFunction,
+) {
+  try {
+    const authContext =
+      (req as MedusaRequest & { auth_context?: { actor_id?: string; actor_type?: string } })
+        .auth_context ?? req.session?.auth_context;
+    const actorId = authContext?.actor_type === "user" ? authContext.actor_id : undefined;
+    if (!actorId) {
+      throw new MedusaError(MedusaError.Types.UNAUTHORIZED, "Unauthorized");
+    }
+
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+    const {
+      data: [actor],
+    } = await query.graph({
+      entity: "user",
+      fields: ["id", "super_admin.id"],
+      filters: { id: actorId },
+    });
+
+    if (!(actor as { super_admin?: { id: string } | null } | undefined)?.super_admin?.id) {
+      throw new MedusaError(
+        MedusaError.Types.NOT_ALLOWED,
+        "Access denied. This operation is restricted to super administrator only",
+      );
+    }
+
+    return next();
+  } catch (error) {
+    next(error);
+  }
+}
 
 export const adminImpersonateRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["GET"],
     matcher: "/admin/impersonate",
-    middlewares: [onlyForSuperAdmins],
+    middlewares: [onlyAuthenticatedSuperAdmin],
   },
-  {
-    method: ["DELETE"],
-    matcher: "/admin/impersonate",
-    middlewares: [onlyForSuperAdmins],
-  },
+  // DELETE stays open: it is called while impersonating
 ];

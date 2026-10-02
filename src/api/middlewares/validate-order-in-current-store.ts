@@ -9,8 +9,7 @@ import type { LoggedInUser } from "./logged-in-user";
 
 const ORDER_ID_PREFIX = "order_";
 
-// 404 for an order of another store (super admins are not restricted).
-// Other ids under the matcher (export, all) are skipped.
+// 404 for another store's order; non order ids (export, all) are skipped
 export async function validateOrderInCurrentStore(
   req: MedusaRequest,
   _res: MedusaResponse,

@@ -6,7 +6,6 @@ import type {
 } from "@medusajs/framework/http";
 import { onlyForSuperAdmins } from "../../middlewares/only-for-super-admin";
 
-// own layouts are allowed, the default one (is_default) is super admin only
 async function onlySuperAdminsForDefaultLayout(
   req: MedusaRequest<{ is_default?: boolean }>,
   res: MedusaResponse,

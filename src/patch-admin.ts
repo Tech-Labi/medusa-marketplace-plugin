@@ -184,23 +184,6 @@ if (CHUNK_2) {
   writeFile(lines, CHUNK_2);
 }
 
-// 5) add Impersonate block
-const CHUNKS_3 = findChunksFileByContainingText("var MainLayout");
-if (CHUNKS_3?.length > 0) {
-  for (let chk of CHUNKS_3) {
-    lines = readFileAsLines(chk);
-    lines.forEach((line: string, index: number) => {
-      if (line.includes("var MainLayout")) {
-        const newCode = `var MainLayout=()=>{const impersonateKey="IMPERSIONATED_AS";const removeImpersonate=async()=>{localStorage.removeItem(impersonateKey);await fetch("/admin/impersonate",{method: "DELETE"});window.location.href="/app/merchants"};const impersionatedAs=localStorage.getItem(impersonateKey);const children=[];if(impersionatedAs){children.push(jsx14("div",{className:"flex justify-between items-center bg-ui-tag-purple-icon px-2 py-1 h-8 text-ui-fg-on-inverted text-xs md:text-sm",children:[jsx14("p",{className:"max-w-[156px] md:max-w-full truncate max-h-[1.2em]",children:\`Impersonated as \${impersionatedAs}\`}),jsx14("button",{onClick:removeImpersonate,className:"border border-ui-tag-neutral-border px-2",children:"Remove Impersonation"})]}));}children.push(jsx14(Shell,{children:jsx14(MainSidebar,{})}));return jsx14("div",{children});};`;
-        lines[index] = newCode;
-        lines[index + 1] = "";
-        lines[index + 2] = "";
-      }
-    });
-    writeFile(lines, chk);
-  }
-}
-
 // Reset Vite cache
 if (fs.existsSync(VITE_CACHE_PATH)) {
   fs.rmSync(VITE_CACHE_PATH, { recursive: true, force: true });

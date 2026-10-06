@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.66.0
+
+### Misc
+
+- updated Medusa packages to `2.21.2`
+- Node.js `^20.19.0 || >=22.12.0` is required
+
+### Features
+
+- impersonation bar is an admin widget instead of a `MainLayout` patch in `patch-admin`
+
+### Security
+
+- `GET /admin/impersonate` and the non store scoped core routes from Medusa 2.17+ are super admin only
+- `/admin/orders/:id` returns 404 for orders of another store
+
 ## 0.65.0
 
 ### Bug fixes

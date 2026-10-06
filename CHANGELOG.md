@@ -9,7 +9,7 @@
 
 ### Features
 
-- impersonation bar moved to a `topbar` admin widget
+- impersonation bar is an admin widget instead of a `MainLayout` patch in `patch-admin`
 
 ### Security
 

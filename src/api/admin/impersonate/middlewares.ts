@@ -32,7 +32,7 @@ async function onlyAuthenticatedSuperAdmin(
 
     if (!(actor as { super_admin?: { id: string } | null } | undefined)?.super_admin?.id) {
       throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
+        MedusaError.Types.FORBIDDEN,
         "Access denied. This operation is restricted to super administrator only",
       );
     }

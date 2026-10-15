@@ -8,6 +8,7 @@ import { ContainerRegistrationKeys, MedusaError } from "@medusajs/framework/util
 import type { LoggedInUser } from "./logged-in-user";
 
 const ORDER_ID_PREFIX = "order_";
+const ORDER_CHANGE_ID_PREFIX = "ordch_";
 
 // 404 for another store's order; non order ids (export, all) are skipped
 export async function validateOrderInCurrentStore(
@@ -16,7 +17,22 @@ export async function validateOrderInCurrentStore(
   next: MedusaNextFunction,
 ) {
   try {
-    const orderId = req.params?.id;
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+
+    let orderId: string | undefined =
+      req.params?.id ?? (req.body as { order_id?: string } | undefined)?.order_id;
+
+    if (orderId?.startsWith(ORDER_CHANGE_ID_PREFIX)) {
+      const {
+        data: [orderChange],
+      } = await query.graph({
+        entity: "order_change",
+        fields: ["order_id"],
+        filters: { id: orderId },
+      });
+      orderId = orderChange?.order_id;
+    }
+
     if (!orderId?.startsWith(ORDER_ID_PREFIX)) {
       return next();
     }
@@ -35,14 +51,13 @@ export async function validateOrderInCurrentStore(
 
     const notFound = new MedusaError(
       MedusaError.Types.NOT_FOUND,
-      `Order with id: ${orderId} was not found`,
+      `Order with id: ${req.params?.id ?? orderId} was not found`,
     );
 
     if (!currentStore?.id) {
       throw notFound;
     }
 
-    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
     const { data: links } = await query.graph({
       entity: "order_store",
       fields: ["order_id"],

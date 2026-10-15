@@ -18,7 +18,7 @@ async function onlySuperAdminsForDefaultLayout(
   return next();
 }
 
-// core admin routes (Medusa 2.17 - 2.21) that are not store scoped
+// core admin routes (Medusa 2.16 - 2.21) that are not store scoped
 export const adminRestrictedCoreRoutesMiddlewares: MiddlewareRoute[] = [
   // queries all stores, the dashboard fork uses the scoped list endpoints
   {
@@ -62,5 +62,15 @@ export const adminRestrictedCoreRoutesMiddlewares: MiddlewareRoute[] = [
     method: ["POST"],
     matcher: "/admin/layouts/:zone/configuration",
     middlewares: [onlySuperAdminsForDefaultLayout],
+  },
+  {
+    method: ["POST", "DELETE"],
+    matcher: "/admin/product-options/:id",
+    middlewares: [onlyForSuperAdmins],
+  },
+  {
+    method: ["POST", "DELETE"],
+    matcher: "/admin/product-options/:id/values/*",
+    middlewares: [onlyForSuperAdmins],
   },
 ];

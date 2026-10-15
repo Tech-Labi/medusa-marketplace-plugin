@@ -9,12 +9,13 @@
 
 ### Features
 
-- impersonation bar is an admin widget instead of a `MainLayout` patch in `patch-admin`
+- impersonation bar is a topbar admin widget instead of a `MainLayout` patch in `patch-admin`, it can not be hidden via "Customize"
 
 ### Security
 
-- `GET /admin/impersonate` and the non store scoped core routes from Medusa 2.17+ are super admin only
-- `/admin/orders/:id` returns 404 for orders of another store
+- super admin only: `GET /admin/impersonate`, the non store scoped core routes from Medusa 2.16+ and updating or deleting product options (`/admin/product-options/:id`, shared between stores); super admin only routes return 403 instead of 400
+- `/admin/orders/:id`, `/admin/order-edits/:id` and `/admin/order-changes/:id` return 404 for orders of another store
+- the `store_id` cookie is checked against the user's stores (a super admin can select any store)
 
 ## 0.65.0
 

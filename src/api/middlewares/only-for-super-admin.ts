@@ -25,7 +25,7 @@ export async function onlyForSuperAdmins(
 
     if (!isSuperAdmin) {
       throw new MedusaError(
-        MedusaError.Types.NOT_ALLOWED,
+        MedusaError.Types.FORBIDDEN,
         "Access denied. This operation is restricted to super administrator only"
       );
     }

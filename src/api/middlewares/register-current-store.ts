@@ -11,6 +11,7 @@ import {
   UserDTO,
 } from "@medusajs/framework/types";
 import * as cookie from "cookie";
+import type { LoggedInUser } from "./logged-in-user";
 
 export async function registerCurrentStore(
   req: AuthenticatedMedusaRequest,
@@ -56,24 +57,26 @@ export async function registerCurrentStore(
     // check if active store selected (Multi-Store feature)
     const cookies = req.headers.cookie ? cookie.parse(req.headers.cookie) : {};
     const cookieStoreId = cookies?.store_id;
-    if (!cookieStoreId) {
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+    const { data: stores } = await query.graph({
+      entity: "user_store",
+      fields: ["id", "store_id"],
+      filters: {
+        user_id: [loggedInUser.id],
+      },
+    });
+    // the cookie can be edited by the client: only the user's own stores, any store for a super admin
+    const isSuperAdmin = !!(loggedInUser as LoggedInUser).super_admin?.id;
+    if (cookieStoreId && (isSuperAdmin || stores.some((s) => s.store_id === cookieStoreId))) {
+      storeId = cookieStoreId;
+    } else {
       // then let's just grab 1st store of user
-      const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
-      const { data: stores } = await query.graph({
-        entity: "user_store",
-        fields: ["id", "store_id"],
-        filters: {
-          user_id: [loggedInUser.id],
-        },
-      });
       storeId = stores[0]?.store_id;
       if (!storeId) {
         // TODO: if use both dashboard and iso platform
         next();
         return;
       }
-    } else {
-      storeId = cookieStoreId;
     }
     // API request with Secret API key
   } else if (

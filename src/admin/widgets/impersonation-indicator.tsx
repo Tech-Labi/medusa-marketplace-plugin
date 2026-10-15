@@ -50,6 +50,8 @@ const ImpersonationIndicator = () => {
 export const config = defineWidgetConfig({
   zone: "topbar",
   id: "marketplace:impersonation-indicator",
+  // @ts-expect-error from the chargx/medusa admin-sdk the core is built with
+  hideable: false,
 });
 
 export default ImpersonationIndicator;

@@ -13,7 +13,7 @@
 
 ### Security
 
-- super admin only: `GET /admin/impersonate`, the non store scoped core routes from Medusa 2.16+ and updating or deleting product options (`/admin/product-options/:id`, shared between stores); super admin only routes return 403 instead of 400
+- super admin only: `GET /admin/impersonate`, the non store scoped core routes from Medusa 2.16+ and changes of data shared between stores: product options (`/admin/product-options`), system default views (`/admin/views/:entity/configurations`) and property labels (`/admin/property-labels`); super admin only routes return 403 instead of 400
 - `/admin/orders/:id`, `/admin/order-edits/:id` and `/admin/order-changes/:id` return 404 for orders of another store
 - the `store_id` cookie is checked against the user's stores (a super admin can select any store)
 

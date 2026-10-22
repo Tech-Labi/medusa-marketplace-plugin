@@ -4,6 +4,7 @@ import type {
   MedusaResponse,
   MiddlewareRoute,
 } from "@medusajs/framework/http";
+import { ContainerRegistrationKeys } from "@medusajs/framework/utils";
 import { onlyForSuperAdmins } from "../../middlewares/only-for-super-admin";
 
 async function onlySuperAdminsForDefaultLayout(
@@ -13,6 +14,33 @@ async function onlySuperAdminsForDefaultLayout(
 ) {
   if (req.body?.is_default) {
     return onlyForSuperAdmins(req, res, next);
+  }
+
+  return next();
+}
+
+async function onlySuperAdminsForSystemDefaultView(
+  req: MedusaRequest<{ is_system_default?: boolean }>,
+  res: MedusaResponse,
+  next: MedusaNextFunction,
+) {
+  if (req.body?.is_system_default) {
+    return onlyForSuperAdmins(req, res, next);
+  }
+
+  if (req.params.id) {
+    const query = req.scope.resolve(ContainerRegistrationKeys.QUERY);
+    const {
+      data: [view],
+    } = await query.graph({
+      entity: "view_configuration",
+      fields: ["is_system_default"],
+      filters: { id: req.params.id },
+    });
+
+    if (view?.is_system_default) {
+      return onlyForSuperAdmins(req, res, next);
+    }
   }
 
   return next();
@@ -63,6 +91,12 @@ export const adminRestrictedCoreRoutesMiddlewares: MiddlewareRoute[] = [
     matcher: "/admin/layouts/:zone/configuration",
     middlewares: [onlySuperAdminsForDefaultLayout],
   },
+  // shared between stores
+  {
+    method: ["POST"],
+    matcher: "/admin/product-options",
+    middlewares: [onlyForSuperAdmins],
+  },
   {
     method: ["POST", "DELETE"],
     matcher: "/admin/product-options/:id",
@@ -71,6 +105,26 @@ export const adminRestrictedCoreRoutesMiddlewares: MiddlewareRoute[] = [
   {
     method: ["POST", "DELETE"],
     matcher: "/admin/product-options/:id/values/*",
+    middlewares: [onlyForSuperAdmins],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/views/:entity/configurations",
+    middlewares: [onlySuperAdminsForSystemDefaultView],
+  },
+  {
+    method: ["POST", "DELETE"],
+    matcher: "/admin/views/:entity/configurations/:id",
+    middlewares: [onlySuperAdminsForSystemDefaultView],
+  },
+  {
+    method: ["POST"],
+    matcher: "/admin/property-labels",
+    middlewares: [onlyForSuperAdmins],
+  },
+  {
+    method: ["POST", "DELETE"],
+    matcher: "/admin/property-labels/*",
     middlewares: [onlyForSuperAdmins],
   },
 ];

@@ -4,8 +4,8 @@
 
 ### Misc
 
-- updated Medusa packages to `2.21.2`
-- Node.js `^20.19.0 || >=22.12.0` is required
+- updated Medusa packages to `2.22.0`
+- Node.js `>=22.22.0` is required
 
 ### Features
 

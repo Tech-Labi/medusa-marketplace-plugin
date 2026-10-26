@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.66.0
+
+### Misc
+
+- updated Medusa packages to `2.22.0`
+- Node.js `>=22.22.0` is required
+
+### Features
+
+- impersonation bar is a topbar admin widget instead of a `MainLayout` patch in `patch-admin`, it can not be hidden via "Customize"
+
+### Security
+
+- super admin only: `GET /admin/impersonate`, the non store scoped core routes from Medusa 2.16+ and changes of data shared between stores: product options (`/admin/product-options`), system default views (`/admin/views/:entity/configurations`) and property labels (`/admin/property-labels`); super admin only routes return 403 instead of 400
+- `/admin/orders/:id`, `/admin/order-edits/:id` and `/admin/order-changes/:id` return 404 for orders of another store
+- the `store_id` cookie is checked against the user's stores (a super admin can select any store)
+
 ## 0.65.0
 
 ### Bug fixes
